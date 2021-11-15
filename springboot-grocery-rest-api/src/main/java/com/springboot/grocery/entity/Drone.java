@@ -2,11 +2,13 @@ package com.springboot.grocery.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 
 
 @Entity
@@ -21,7 +23,7 @@ public class Drone {
     )
     private Long id;
 
-    private int weight_limit;
+    private double weight_limit;
 
     private int trips_left;
 
