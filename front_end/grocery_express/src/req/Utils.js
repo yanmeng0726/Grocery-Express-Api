@@ -1,5 +1,5 @@
 import {getRequest} from './req'
 
-export function getTempFolder() {
-    return getRequest('/api/servermanagement/tempfolder');
+export function getStores() {
+    return getRequest('http://localhost:8080/stores');
 }
