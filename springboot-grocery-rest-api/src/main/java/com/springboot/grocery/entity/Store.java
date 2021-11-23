@@ -34,9 +34,8 @@ public class Store {
     @Column(name = "revenue", nullable = true)
     private double revenue;
 
-
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Drone> drones = new HashSet<>();
+    private Set<Item> items = new HashSet<>();
 
 
 

@@ -9,5 +9,5 @@ public class StoreDto {
     private long id;
     private String name;
     private double revenue;
-    private Set<DroneDto> drones;
+    private Set<ItemDto> items;
 }

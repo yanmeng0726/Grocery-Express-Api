@@ -1,8 +1,6 @@
 package com.springboot.grocery.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,7 +8,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-
+@Getter
+@Setter
 @Entity
 @Table(
         name = "item"
