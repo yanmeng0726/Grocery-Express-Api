@@ -8,6 +8,7 @@ import com.springboot.grocery.payload.DroneDto;
 import com.springboot.grocery.repository.DroneRepository;
 import com.springboot.grocery.repository.StoreRepository;
 import com.springboot.grocery.service.DroneService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,12 @@ public class DroneServiceImp implements DroneService {
 
     private DroneRepository droneRepository;
     private StoreRepository storeRepository;
+    private ModelMapper mapper;
 
-    public DroneServiceImp(DroneRepository droneRepository, StoreRepository storeRepository) {
+    public DroneServiceImp(DroneRepository droneRepository, StoreRepository storeRepository, ModelMapper mapper) {
         this.droneRepository = droneRepository;
         this.storeRepository = storeRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -64,20 +67,22 @@ public class DroneServiceImp implements DroneService {
 
 
     private DroneDto mapToDTO(Drone drone){
-        DroneDto droneDto = new DroneDto();
-        droneDto.setId(drone.getId());
-        droneDto.setStatus(drone.getStatus());
-        droneDto.setTrips_left(drone.getTrips_left());
-        droneDto.setWeight_limit(drone.getWeight_limit());
+        DroneDto droneDto = mapper.map(drone, DroneDto.class);
+//        DroneDto droneDto = new DroneDto();
+//        droneDto.setId(drone.getId());
+//        droneDto.setStatus(drone.getStatus());
+//        droneDto.setTrips_left(drone.getTrips_left());
+//        droneDto.setWeight_limit(drone.getWeight_limit());
         return droneDto;
     }
 
     private Drone mapToEntity(DroneDto droneDto){
-        Drone drone = new Drone();
-        drone.setId(droneDto.getId());
-        drone.setStatus(droneDto.getStatus());
-        drone.setTrips_left(droneDto.getTrips_left());
-        drone.setWeight_limit(droneDto.getWeight_limit());
+        Drone drone = mapper.map(droneDto,Drone.class);
+//        Drone drone = new Drone();
+//        drone.setId(droneDto.getId());
+//        drone.setStatus(droneDto.getStatus());
+//        drone.setTrips_left(droneDto.getTrips_left());
+//        drone.setWeight_limit(droneDto.getWeight_limit());
         return drone ;
     }
 
