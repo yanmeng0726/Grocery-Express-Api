@@ -1,15 +1,14 @@
 package com.springboot.grocery.service.impl;
 
-import com.springboot.grocery.entity.Drone;
 import com.springboot.grocery.entity.Employee;
 import com.springboot.grocery.entity.Store;
 import com.springboot.grocery.exception.GroceryAPIException;
 import com.springboot.grocery.exception.ResourceNotFoundException;
 import com.springboot.grocery.payload.EmployeeDto;
-
 import com.springboot.grocery.repository.EmployeeRepository;
 import com.springboot.grocery.repository.StoreRepository;
 import com.springboot.grocery.service.EmployeeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,7 @@ public class EmployeeServiceImp implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private StoreRepository storeRepository;
+    private ModelMapper mapper;
 
 
     public EmployeeServiceImp(StoreRepository storeRepository,EmployeeRepository employeeRepository) {
@@ -67,6 +67,7 @@ public class EmployeeServiceImp implements EmployeeService {
 
 
     private EmployeeDto mapToDTO(Employee employee){
+
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(employee.getId());
         employeeDto.setFirst_name(employee.getFirst_name());
