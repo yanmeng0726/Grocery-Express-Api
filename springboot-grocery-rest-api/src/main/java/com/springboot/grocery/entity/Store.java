@@ -2,12 +2,16 @@ package com.springboot.grocery.entity;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -29,6 +33,9 @@ public class Store {
 
     @Column(name = "revenue", nullable = true)
     private double revenue;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Item> items = new HashSet<>();
 
 
 

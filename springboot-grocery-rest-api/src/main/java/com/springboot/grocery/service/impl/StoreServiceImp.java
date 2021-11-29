@@ -5,6 +5,7 @@ import com.springboot.grocery.exception.ResourceNotFoundException;
 import com.springboot.grocery.payload.StoreDto;
 import com.springboot.grocery.repository.StoreRepository;
 import com.springboot.grocery.service.StoreService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 public class StoreServiceImp implements StoreService {
 
     private StoreRepository storeRepository;
+    private ModelMapper mapper;
 
-    public StoreServiceImp(StoreRepository storeRepository) {
+    public StoreServiceImp(StoreRepository storeRepository, ModelMapper mapper) {
         this.storeRepository = storeRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -40,18 +43,20 @@ public class StoreServiceImp implements StoreService {
     }
 
     private StoreDto mapToDTO(Store store){
-        StoreDto storeDto = new StoreDto();
-        storeDto.setId(store.getId());
-        storeDto.setName(store.getName());
-        storeDto.setRevenue(store.getRevenue());
+        StoreDto storeDto = mapper.map(store, StoreDto.class);
+//        StoreDto storeDto = new StoreDto();
+//        storeDto.setId(store.getId());
+//        storeDto.setName(store.getName());
+//        storeDto.setRevenue(store.getRevenue());
         return storeDto;
     }
 
     private Store mapToEntity(StoreDto storeDto){
-        Store store = new Store();
-        store.setId(storeDto.getId());
-        store.setName(storeDto.getName());
-        store.setRevenue(storeDto.getRevenue());
+        Store store = mapper.map(storeDto,Store.class);
+//        Store store = new Store();
+//        store.setId(storeDto.getId());
+//        store.setName(storeDto.getName());
+//        store.setRevenue(storeDto.getRevenue());
         return store ;
     }
 
