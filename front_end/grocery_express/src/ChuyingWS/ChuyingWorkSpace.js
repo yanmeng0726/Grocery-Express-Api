@@ -4,15 +4,16 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import {getStores} from '../req/Utils'
+import {getStores, addStore} from '../req/Utils'
 import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
+import {CustomerToolBar} from '../Customer/Component/CustomerToolBar'
+import {CustomerStorePage} from '../Customer/Pages/CustomerStorePage'
 
 export const ChuyingWorkSpace =(props) =>{
  
-  
   return (
     <div>
-       <StoreManagePage/>
+        <CustomerStorePage/>  
     </div>    
   );
 }

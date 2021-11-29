@@ -2,23 +2,13 @@ import React, { useState, useRef, useEffect, useContext }   from 'react';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import {getStores, addStore} from '../../req/Utils'
-import {NewStoreDialog} from '../Component/NewStorePopUp'
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import {StoreItem} from "../Component/StoreItem"
+import {CustomerToolBar} from "../Component/CustomerToolBar"
+import {StoreCard} from "../Component/StoreCard"
+import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 
 
-export const StoreManagePage = (porps) =>{
+export const CustomerStorePage = (porps) =>{
     const [stores, setStores] = useState([]);
     const [newStoreDlgOpen, setNewStroeDlgOpen] = useState(false); 
     const isMounted = useRef(false);
@@ -89,25 +79,19 @@ export const StoreManagePage = (porps) =>{
 
     return(
      <div>
-         <h>Store Management</h>
-         <Divider/>
-         <div style={{display:"flex"}}>
-           <div style ={{width : "60%"}}>
-            {
-              stores.map((store) => {
-                console.log(store.name);
-                return(
-                <StoreItem name= {store.name} revenue={store.revenue} expanded={false}/>)
-              })
-            }
-           </div>
-           <div>
-           <Button onClick={openNewStoreDlg}>Add a Store</Button>
-           </div>  
-         </div>
-         {
-             newStoreDlgOpen&& <NewStoreDialog open={newStoreDlgOpen} handleClose={closeNewStoreDlg} handleConfirm={confirmAddStore}/>
-         }        
+         <CustomerToolBar/>
+          <Grid container spacing={4} style={{width:"80%", margin:"10%", marginTop:"10px"}}>
+          {stores && 
+             stores.map((store,index)=>{
+             console.log(store)     
+             return(
+              <Grid index = {index} item xs={10} sm={6} md={6}>       
+             <StoreCard name={store.name} index ={index}/>
+              </Grid>
+             )  
+          })
+          }
+         </Grid>
      </div>
     );
 }
