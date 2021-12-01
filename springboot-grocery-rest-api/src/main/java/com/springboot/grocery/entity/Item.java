@@ -31,5 +31,4 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
-
 }

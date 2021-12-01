@@ -46,7 +46,7 @@ public class User {
     private String customer_rating;
 
     @Column(name = "credits", nullable = true)
-    private String credits;
+    private double credits;
 
 
     @Column(name = "is_manager", nullable = false)

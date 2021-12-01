@@ -12,7 +12,7 @@ public class UserDto {
     private String password;
     private String address;
     private String customer_rating;
-    private String credits;
+    private double credits;
     private Boolean is_manager;
 
 }

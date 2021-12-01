@@ -6,11 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin
 @RestController
-@RequestMapping("/stores/{store_id}/orders")
+@RequestMapping
 public class OrderController {
     private OrderService orderService;
 
@@ -18,16 +16,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping
+    @PostMapping("/stores/{store_id}/orders")
     public ResponseEntity<OrderDto> createOrder(@PathVariable(value = "store_id") long store_id,
                                                 @RequestBody OrderDto orderDto){
+
         return new ResponseEntity<>(orderService.createOrder(store_id, orderDto), HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public List<OrderDto> getOrdersByStoreId(@PathVariable(value = "store_id") Long store_id){
-        return orderService.getOrdersByStoreId(store_id);
-    }
+
 
     @PutMapping("/{order_id}")
     public ResponseEntity<OrderDto> updateOrder(@PathVariable(value = "store_id") Long store_id,

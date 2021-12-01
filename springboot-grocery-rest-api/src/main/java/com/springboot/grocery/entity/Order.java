@@ -1,9 +1,7 @@
 package com.springboot.grocery.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,10 +9,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-
+@Getter
+@Setter
 @Entity
 @Table(
-        name = "order"
+        name = "`order`"
 )
 public class Order {
     @Id
@@ -22,8 +21,9 @@ public class Order {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-    private String drone_id;
-    private String employee_id;
+    private Long user_id;
+    private Long drone_id;
+    private Long employee_id;
     private double total_cost;
     private double total_weight;
     private int order_status;
