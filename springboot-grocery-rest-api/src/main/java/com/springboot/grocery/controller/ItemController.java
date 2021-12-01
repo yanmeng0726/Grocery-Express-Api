@@ -28,8 +28,6 @@ public class ItemController {
         return itemService.getItemsByStoreId(store_id);
     }
 
-
-
 }
 
 
