@@ -8,21 +8,22 @@ export function postRequest(url ,data){
       req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
       req.setRequestHeader('Accept', 'application/json');
       req.onload= (r) =>{
+         console.log(r.target.status)
          if(req.response && req.response.code === 460){
             window.location.reload();
             return;
          }
-         if(r.target.status >=400){
+         if(r.target.status >= 400){
             const message = 
             r.target.response && 
             r.target.response.error&&r.target.response.error.message;
             reject(new Error(r.target.status+ '-' +message));
          }
          else{
-            resolve(req.response);
+            resolve(req.response); 
          }
       };
-      req.onerror =(e) => {
+      req.onerror = (e) => {
         reject(e);
       };
       req.send(send);

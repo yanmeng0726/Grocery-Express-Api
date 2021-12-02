@@ -9,16 +9,7 @@ import { ChuyingWorkSpace } from './ChuyingWS/ChuyingWorkSpace'
 import { HuangqiWorkSpace } from './HuangqiWS/HuangqiWorkSpace'
 
 ReactDOM.render(
-  <BrowserRouter>
-  <Routes>
-    <Route path="/" element={<App />}>
-      <Route path="Manager" element={<ManagerMain/>} />
-      <Route path="Chuying" element={<ChuyingWorkSpace/>} />
-      <Route path ="Huangqi" element={<HuangqiWorkSpace/>} />      
-    </Route>
-  </Routes>
-</BrowserRouter>,
-  document.getElementById('root')
+  <App />, document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

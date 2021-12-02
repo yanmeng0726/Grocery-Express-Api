@@ -21,6 +21,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
+        System.out.println("hittttttttttttttttt");
         User user = mapToEntity(userDto);
         User newUser = userRepository.save(user);
         UserDto userResponse = mapToDTO(newUser);

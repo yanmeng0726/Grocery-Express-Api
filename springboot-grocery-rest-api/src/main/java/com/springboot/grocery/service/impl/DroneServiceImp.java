@@ -77,6 +77,7 @@ public class DroneServiceImp implements DroneService {
         drone.setId(droneDto.getId());
         drone.setStatus(droneDto.getStatus());
         drone.setTrips_left(droneDto.getTrips_left());
+        System.out.println(droneDto.getWeight_limit());
         drone.setWeight_limit(droneDto.getWeight_limit());
         return drone ;
     }
