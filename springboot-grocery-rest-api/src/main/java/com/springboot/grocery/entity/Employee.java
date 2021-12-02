@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(/*Question*/
+@Table(
         name = "employee", uniqueConstraints = {@UniqueConstraint(columnNames = {"license_id"})}
 )
 public class Employee {

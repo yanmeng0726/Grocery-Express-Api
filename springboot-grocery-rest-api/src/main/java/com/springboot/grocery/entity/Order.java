@@ -1,5 +1,6 @@
 package com.springboot.grocery.entity;
 
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,22 +13,20 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(
-        name = "item"
+        name = "`order`"
 )
-
-public class Item {
-
-
+public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private Long id;
-
-    private double unit_price;
-
-    private double weight;
-
-    private String name;
-
+    private Long user_id;
+    private Long drone_id;
+    private Long employee_id;
+    private double total_cost;
+    private double total_weight;
+    private int order_status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;

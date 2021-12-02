@@ -1,6 +1,8 @@
 package com.springboot.grocery.controller;
 
+import com.springboot.grocery.payload.OrderDto;
 import com.springboot.grocery.payload.UserDto;
+import com.springboot.grocery.service.OrderService;
 import com.springboot.grocery.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private OrderService orderService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, OrderService orderService) {
+
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     // create
@@ -35,6 +40,11 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") long id){
         return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @GetMapping("/{id}/orders")
+    public List<OrderDto> getOrdersByUserId(@PathVariable(value = "id") Long id){
+        return orderService.getOrdersByUserId(id);
     }
 
 }
