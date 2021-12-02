@@ -7,3 +7,10 @@ export function getStores() {
 export function addStore(storeName){
     return postRequest('http://localhost:8080/stores', { name: storeName})
 }
+
+export function addItemToStore(storeId, itemName, itemWeight, itemPrice){
+    return postRequest(`http://localhost:8080/stores/${storeId}/items`, 
+    { name: itemName ,
+      unit_price: itemPrice,
+      weight: itemWeight})
+}

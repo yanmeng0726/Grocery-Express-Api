@@ -8,12 +8,13 @@ import {getStores, addStore} from '../req/Utils'
 import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
 import {CustomerToolBar} from '../Customer/Component/CustomerToolBar'
 import {CustomerStorePage} from '../Customer/Pages/CustomerStorePage'
-
+import { CartItem } from '../Customer/Component/CartItem';
+import { StoreItemsPage } from '../Customer/Pages/StoreItemsPage';
 export const ChuyingWorkSpace =(props) =>{
- 
+  
   return (
     <div>
-        <CustomerStorePage/>  
+        <StoreManagePage/>
     </div>    
   );
 }

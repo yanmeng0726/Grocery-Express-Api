@@ -12,35 +12,67 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
+import Grid from '@mui/material/Grid';
 
-export const FormDialog = (props) =>{
+export const NewItemDialog = (props) =>{
     const [weight, setWeight] = React.useState(0.0);
+    const [weightErr, setWeightErr] = React.useState(false);
     const [name, setName] = React.useState("");
+    const [nameErr, setNameErr ] = React.useState(false);
     const [price, setPrice] = React.useState(0.0);
+    const [priceErr, setPriceErr ] =React.useState(false)
     
     const handleWeightChange=(event)=>{
-       //Todo: validate input
-       setWeight(event.target.value); 
+       setWeight(event.target.value);
+       var regExp = /[a-zA-Z]/g;
+       if(event.target.value <= 0|| regExp.test(event.target.value)){
+         setWeightErr(true);
+       }
+       else{
+        setWeightErr(false);
+       } 
     }
 
     const handleNameChange = (event)=>{
-        //Todo: validate input
-        setName(event.target.value); 
+        setName(event.target.value);
+        if(event.target.value.length <= 0){
+          setNameErr(true)
+        }
+        else{
+          setNameErr(false)
+        } 
      }
 
      const handlePriceChange = (event)=>{
-        //Todo: validate input
-        setName(event.target.value); 
+        setPrice(event.target.value);
+        var regExp = /[a-zA-Z]/g;
+        if(event.target.value<=0 || regExp.test(event.target.value)){
+          setPriceErr(true)
+        }
+        else{
+          setPriceErr(false) 
+        } 
      }
+
+     const handleConfirm =() =>{
+       if(nameErr||priceErr||weightErr||weight<=0 ||price<=0 ||name.length<=0){
+         alert("Please check you input!")
+         return;
+       }
+      props.handleConfirm(props.id,name,weight,price);
+    }  
     
     return (
       <div>
-        <Dialog open={props.openAddItem} onClose={props.handleClose}>
+        <Dialog open={props.open}>
           <DialogTitle>
-              {`Add new item(s) to ${props.storeName}`} 
+              {`Add new item(s) to ${props.name}`} 
           </DialogTitle>
           <DialogContent>
+          <Grid>
+          <Grid>Name:</Grid>      
           <OutlinedInput
+            error={nameErr}
             id="outlined-adornment-name"
             value={name}
             onChange={handleNameChange}
@@ -48,28 +80,32 @@ export const FormDialog = (props) =>{
               'aria-label': 'Name',
             }}
           />
+          </Grid>
+          <Grid>
+          <Grid>Weight(Kg):</Grid>    
           <OutlinedInput
+            error={weightErr}
             id="outlined-adornment-weight"
-            value={wieght}
-            endAdornment={<InputAdornment position="end">kg</InputAdornment>}
+            value={weight}
             onChange={handleWeightChange}
             inputProps={{
               'aria-label': 'Weight',
             }}
           />
-          
+          </Grid>
+          <Grid>
+          <Grid>Unit Price($):</Grid>
           <OutlinedInput
+            error={priceErr}
             id="outlined-adornment-price"
             value={price}
             onChange={handlePriceChange}
-            endAdornment={<InputAdornment position="end">$</InputAdornment>}
-            inputProps={{
-              'aria-label': 'Price',
-            }}
+           
           />
+          </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={props.confirmAddItem}>Confirm</Button>
+            <Button onClick={handleConfirm}>Confirm</Button>
             <Button onClick={props.handleClose}>Cancel</Button>
           </DialogActions>
         </Dialog>

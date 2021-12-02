@@ -12,16 +12,17 @@ import icon5 from '../../Assets/icon5.jpg'
 import icon6 from '../../Assets/icon6.jpg'
 import icon7 from '../../Assets/icon7.jpg'
 import icon8 from '../../Assets/icon8.jpg'
-
+import { useParams, useNavigate } from 'react-router-dom';
 
 
 export const StoreCard = (props)=> {
   const iconList = [icon,icon2,icon3,icon4,icon5,icon6,icon7,icon8]
+  let navigate = useNavigate();
   return (
     <Card style={props.style} sx={{ maxWidth: 380 }}>
       <CardActionArea
         onClick={() => {
-          console.log("going to this store page");
+          navigate(`/Chuying/${props.name}`);
         }}
       >
         <CardMedia

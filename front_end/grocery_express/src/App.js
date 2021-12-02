@@ -10,6 +10,7 @@ import { HuangqiWorkSpace } from './HuangqiWS/HuangqiWorkSpace'
 import {Login} from '../src/Authentification/Login'
 import {Register} from "../src/Authentification/Register"
 import { FormControlUnstyled } from '@mui/core';
+import {StoreItemsPage} from './Customer/Pages/StoreItemsPage'
 
 
 function App() {
@@ -42,10 +43,11 @@ function App() {
       {!loggedin &&<Route path = "Login" element={<Login loggedin={true} handleLogin={handleLogin}/>}></Route>}
       {!loggedin &&<Route path = "Register" element={<Register/>} />}
       {!loggedin &&<Route path = "*" element={ <Navigate to='Login' /> } />}
-      {loggedin &&<Route path = "*" element={ <Navigate to='Chuying' /> } />}
       {loggedin && <Route path="Manager" element={<ManagerMain/>}/>}
       {loggedin &&<Route path="Chuying" element={<ChuyingWorkSpace/>} />}
-      {loggedin &&<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}      
+      {loggedin &&<Route path="Chuying/:storeName" element={<StoreItemsPage/>} />}
+      {loggedin &&<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}  
+      {loggedin &&<Route path ="*" element={<Navigate to='Chuying' />}  />}
     </Routes>
     </BrowserRouter> 
     </div>
