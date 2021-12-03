@@ -9,5 +9,6 @@ public interface OrderService {
     List<OrderDto> getOrdersByUserId(long user_id);
     OrderDto updateOrder(long store_id, long order_id, OrderDto orderDto);
     double getPendingIncomeByStoreId(long store_id);
+    void deleteOrder(long store_id, long order_id);
 
 }

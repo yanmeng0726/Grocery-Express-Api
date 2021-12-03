@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-        name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_name"})}
+        name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})}
 )
 public class User {
 
@@ -24,32 +25,29 @@ public class User {
     )
     private Long id;
 
-    @Column(name = "first_name", nullable = false)
-    private String first_name;
+    private String name;
 
-    @Column(name = "last_name", nullable = false)
-    private String last_name;
-
-    @Column(name = "phone", nullable = true)
     private String phone;
 
-    @Column(name = "user_name", nullable = false)
-    private String user_name;
+    private String username;
+    private String email;
 
-    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "address", nullable = true)
     private String address;
 
-    @Column(name = "customer_rating", nullable = true)
+
     private String customer_rating;
 
-    @Column(name = "credits", nullable = true)
     private double credits;
 
 
-    @Column(name = "is_manager", nullable = false)
     private Boolean is_manager;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 
 }

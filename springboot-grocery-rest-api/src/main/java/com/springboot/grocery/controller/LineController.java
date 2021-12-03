@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin
@@ -21,7 +22,7 @@ public class LineController {
     @PostMapping
     public ResponseEntity<LineDto> createLine(@PathVariable(value = "store_id") long store_id,
                                               @PathVariable(value = "order_id") long order_id,
-                                              @RequestBody LineDto lineDto){
+                                              @Valid @RequestBody LineDto lineDto){
         return new ResponseEntity<>(lineService.createLine(store_id, order_id, lineDto), HttpStatus.CREATED);
     }
 
