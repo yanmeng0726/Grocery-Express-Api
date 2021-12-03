@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class UserDto {
     private long id;
     @NotEmpty
-    @Size(max = 20, message = " name should have at most 20 characters ")
+    @Size(max = 50, message = " name should have at most 50 characters ")
     private String name;
     @NotEmpty
     private String username;
