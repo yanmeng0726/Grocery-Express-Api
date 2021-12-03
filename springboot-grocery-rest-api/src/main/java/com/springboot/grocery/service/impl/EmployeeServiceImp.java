@@ -58,6 +58,7 @@ public class EmployeeServiceImp implements EmployeeService {
         if(!employee.getStore().getId().equals(store.getId())){
             throw new GroceryAPIException(HttpStatus.BAD_REQUEST, "Employee does not belongs to store");
         }
+        employee.setExperience(employeeRequest.getExperience());
 
         employee.setIs_free(employeeRequest.getIs_free());
 

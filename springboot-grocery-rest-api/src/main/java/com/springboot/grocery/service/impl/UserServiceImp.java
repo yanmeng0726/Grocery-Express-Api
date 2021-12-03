@@ -19,15 +19,6 @@ public class UserServiceImp implements UserService {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public UserDto createUser(UserDto userDto) {
-        System.out.println("hittttttttttttttttt");
-        User user = mapToEntity(userDto);
-        User newUser = userRepository.save(user);
-        UserDto userResponse = mapToDTO(newUser);
-        return userResponse;
-    }
-
 
     @Override
     public List<UserDto> getAllCustomers() {
@@ -45,11 +36,8 @@ public class UserServiceImp implements UserService {
     private UserDto mapToDTO(User user){
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setFirst_name(user.getFirst_name());
-        userDto.setLast_name(user.getLast_name());
+        userDto.setName(user.getName());
         userDto.setPhone(user.getPhone());
-        userDto.setUser_name(user.getUser_name());
-//        userDto.setPassword(user.getPassword());
         userDto.setCredits(user.getCredits());
         userDto.setCustomer_rating(user.getCustomer_rating());
         userDto.setAddress(user.getAddress());
@@ -58,18 +46,4 @@ public class UserServiceImp implements UserService {
     }
 
 
-    private User mapToEntity(UserDto userDto){
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setFirst_name(userDto.getFirst_name());
-        user.setLast_name(userDto.getLast_name());
-        user.setPhone(userDto.getPhone());
-        user.setUser_name(userDto.getUser_name());
-        user.setPassword(userDto.getPassword());
-        user.setCredits(userDto.getCredits());
-        user.setCustomer_rating(userDto.getCustomer_rating());
-        user.setAddress(userDto.getAddress());
-        user.setIs_manager(userDto.getIs_manager());
-        return user;
-    }
 }
