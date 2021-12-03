@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @CrossOrigin
 @RestController
-@RequestMapping
+@RequestMapping("/stores/{store_id}/orders")
 public class OrderController {
     private OrderService orderService;
 
@@ -16,9 +18,9 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/stores/{store_id}/orders")
+    @PostMapping
     public ResponseEntity<OrderDto> createOrder(@PathVariable(value = "store_id") long store_id,
-                                                @RequestBody OrderDto orderDto){
+                                                @Valid @RequestBody OrderDto orderDto){
 
         return new ResponseEntity<>(orderService.createOrder(store_id, orderDto), HttpStatus.CREATED);
     }
@@ -31,6 +33,14 @@ public class OrderController {
                                                 @RequestBody OrderDto orderDto){
         OrderDto updatedOrder = orderService.updateOrder(store_id, order_id, orderDto);
         return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{order_id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable(value = "store_id") Long store_id,
+                                                @PathVariable(value = "order_id") Long order_id){
+        System.out.println("hit");
+        orderService.deleteOrder(store_id, order_id);
+        return new ResponseEntity<>("Order deleted succesfully", HttpStatus.OK);
     }
 
 

@@ -1,17 +1,13 @@
 package com.springboot.grocery.service.impl;
-import com.springboot.grocery.entity.Item;
 
-import com.springboot.grocery.entity.Line;
-import com.springboot.grocery.entity.Order;
-import com.springboot.grocery.entity.Store;
+import com.springboot.grocery.entity.*;
+import com.springboot.grocery.exception.GroceryAPIException;
 import com.springboot.grocery.exception.ResourceNotFoundException;
 import com.springboot.grocery.payload.LineDto;
-import com.springboot.grocery.repository.ItemRepository;
-import com.springboot.grocery.repository.LineRepository;
-import com.springboot.grocery.repository.OrderRepository;
-import com.springboot.grocery.repository.StoreRepository;
+import com.springboot.grocery.repository.*;
 import com.springboot.grocery.service.LineService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,13 +20,15 @@ public class LineServiceImp implements LineService {
     private ModelMapper mapper;
     private StoreRepository storeRepository;
     private LineRepository lineRepository;
+    private UserRepository userRepository;
 
-    public LineServiceImp(LineRepository lineRepository, OrderRepository orderRepository, ItemRepository itemRepository, ModelMapper mapper, StoreRepository storeRepository) {
+    public LineServiceImp(UserRepository userRepository, LineRepository lineRepository, OrderRepository orderRepository, ItemRepository itemRepository, ModelMapper mapper, StoreRepository storeRepository) {
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.mapper = mapper;
         this.storeRepository = storeRepository;
         this.lineRepository = lineRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -54,6 +52,18 @@ public class LineServiceImp implements LineService {
         if(item.getStore().getId()!= store_id){
             throw new ResourceNotFoundException("item","id",lineDto.getItem_id());
         }
+
+       User user =  userRepository.findById(order.getUser_id()).get();
+
+       double adjustedCredit = user.getCredits() - line.getQuantity()*item.getUnit_price();
+        System.out.println(user.getCredits());
+        System.out.println(line.getQuantity());
+        System.out.println(item.getUnit_price());
+       if(adjustedCredit < 0){
+           throw new GroceryAPIException(HttpStatus.BAD_REQUEST, "credits are not enough");
+       }
+       user.setCredits(adjustedCredit);
+       userRepository.save(user);
         Line newLine = lineRepository.save(line);
         return mapToDto(newLine, item);
     }

@@ -62,6 +62,12 @@ public class DroneServiceImp implements DroneService {
         return mapToDTO(updatedDrone);
     }
 
+    @Override
+    public double getMaxWeightLimitByStoreId(long id) {
+        double maxWeightLimit = droneRepository.getMaxWeightLimitByStoreId(id);
+        return maxWeightLimit;
+    }
+
 
     private DroneDto mapToDTO(Drone drone){
         DroneDto droneDto = new DroneDto();
