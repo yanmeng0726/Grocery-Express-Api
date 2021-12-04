@@ -54,6 +54,7 @@ public class OrderServiceImp implements OrderService {
 
         order.setStore(store);
 
+
         OrderDto newOrder = mapToDTO(orderRepository.save(order));
         newOrder.setStore_id(store_id);
         return newOrder;
@@ -136,6 +137,7 @@ public class OrderServiceImp implements OrderService {
     private Order mapToEntity(OrderDto orderDto){
         Order order = new Order();
         order.setId(orderDto.getId());
+        order.setUser_id(orderDto.getUser_id());
         order.setDrone_id(orderDto.getDrone_id());
         order.setOrder_status(orderDto.getOrder_status());
         order.setEmployee_id(orderDto.getEmployee_id());
