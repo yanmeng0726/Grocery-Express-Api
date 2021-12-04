@@ -4,12 +4,14 @@ import com.springboot.grocery.entity.*;
 import com.springboot.grocery.exception.GroceryAPIException;
 import com.springboot.grocery.exception.ResourceNotFoundException;
 import com.springboot.grocery.payload.LineDto;
+import com.springboot.grocery.payload.LinesDto;
 import com.springboot.grocery.repository.*;
 import com.springboot.grocery.service.LineService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,40 +34,57 @@ public class LineServiceImp implements LineService {
     }
 
     @Override
-    public LineDto createLine(long store_id, long order_id, LineDto lineDto) {
-        Line line = mapToEntity(lineDto);
+    public LinesDto createLine(long store_id, long order_id, LinesDto linesDto) {
+
+        LinesDto newLinesDto = new LinesDto();
+        List<LineDto> lines = new ArrayList<>();
         Store store = storeRepository.findById(store_id).orElseThrow(
                 ()->new ResourceNotFoundException("Store","id",store_id)
         );
-        Order order = orderRepository.findById(lineDto.getOrder_id()).orElseThrow(
-                ()->new ResourceNotFoundException("Order","id",lineDto.getOrder_id())
+        Order order = orderRepository.findById(order_id).orElseThrow(
+                ()->new ResourceNotFoundException("Order","id",order_id)
         );
 
-        Item item = itemRepository.findById(lineDto.getItem_id()).orElseThrow(
-                ()->new ResourceNotFoundException("item","id",lineDto.getItem_id())
+        User user =  userRepository.findById(order.getUser_id()).get();
+        double orderCost = 0.00;
+        for (int i = 0; i < linesDto.getLines().size(); i++) {
+            long id = linesDto.getLines().get(i).getItem_id();
+            Item item = itemRepository.findById(id).orElseThrow(
+                    ()->new ResourceNotFoundException("item","id",id)
+            );
+            orderCost += linesDto.getLines().get(i).getQuantity() * item.getUnit_price();
+        }
+
+        double adjustedCredit = user.getCredits() - orderCost;
+        if(adjustedCredit < 0){
+            throw new GroceryAPIException(HttpStatus.BAD_REQUEST, "credits are not enough");
+        }
+        user.setCredits(adjustedCredit);
+        userRepository.save(user);
+
+        linesDto.getLines().stream().forEach((lineDto)->{
+            Line line = mapToEntity(lineDto);
+
+            Item item = itemRepository.findById(lineDto.getItem_id()).orElseThrow(
+                    ()->new ResourceNotFoundException("item","id",lineDto.getItem_id())
+            );
+            if(order.getStore().getId()!= store_id){
+                throw new ResourceNotFoundException("Order","id",lineDto.getOrder_id());
+            }
+
+            if(item.getStore().getId()!= store_id){
+                throw new ResourceNotFoundException("item","id",lineDto.getItem_id());
+            }
+
+
+            Line newLine = lineRepository.save(line);
+            LineDto newLineDto = mapToDto(newLine, item);
+            lines.add(newLineDto);
+        }
+
         );
-
-        if(order.getStore().getId()!= store_id){
-            throw new ResourceNotFoundException("Order","id",lineDto.getOrder_id());
-        }
-
-        if(item.getStore().getId()!= store_id){
-            throw new ResourceNotFoundException("item","id",lineDto.getItem_id());
-        }
-
-       User user =  userRepository.findById(order.getUser_id()).get();
-
-       double adjustedCredit = user.getCredits() - line.getQuantity()*item.getUnit_price();
-        System.out.println(user.getCredits());
-        System.out.println(line.getQuantity());
-        System.out.println(item.getUnit_price());
-       if(adjustedCredit < 0){
-           throw new GroceryAPIException(HttpStatus.BAD_REQUEST, "credits are not enough");
-       }
-       user.setCredits(adjustedCredit);
-       userRepository.save(user);
-        Line newLine = lineRepository.save(line);
-        return mapToDto(newLine, item);
+        newLinesDto.setLines(lines);
+        return newLinesDto;
     }
 
     @Override
