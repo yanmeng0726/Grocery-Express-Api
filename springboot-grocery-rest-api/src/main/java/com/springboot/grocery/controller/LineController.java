@@ -1,6 +1,7 @@
 package com.springboot.grocery.controller;
 
 import com.springboot.grocery.payload.LineDto;
+import com.springboot.grocery.payload.LinesDto;
 import com.springboot.grocery.service.LineService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,10 @@ public class LineController {
     }
 
     @PostMapping
-    public ResponseEntity<LineDto> createLine(@PathVariable(value = "store_id") long store_id,
+    public ResponseEntity<LinesDto> createLine(@PathVariable(value = "store_id") long store_id,
                                               @PathVariable(value = "order_id") long order_id,
-                                              @Valid @RequestBody LineDto lineDto){
-        return new ResponseEntity<>(lineService.createLine(store_id, order_id, lineDto), HttpStatus.CREATED);
+                                              @Valid @RequestBody LinesDto linesDto){
+        return new ResponseEntity<>(lineService.createLine(store_id, order_id, linesDto), HttpStatus.CREATED);
     }
 
     @GetMapping
