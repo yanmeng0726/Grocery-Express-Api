@@ -7,10 +7,12 @@ import {StoreCard} from "../Component/StoreCard"
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import { stepConnectorClasses } from '@mui/material';
+import { StoreContext } from '../../StoreContext';
 
 
 
-export const CustomerStorePage = (porps) =>{
+export const CustomerStorePage = (props) =>{
+    const store = useContext(StoreContext)
     const [stores, setStores] = useState(null);
     const [newStoreDlgOpen, setNewStroeDlgOpen] = useState(false); 
     const isMounted = useRef(false);
@@ -26,7 +28,11 @@ export const CustomerStorePage = (porps) =>{
    const initStores =() => {
        console.log('get data')
        if(isMounted.current){
-         getStores().then((res)=>{
+         var session =""
+         if(store.session){
+            session = store.session;
+         }
+         getStores(session).then((res)=>{
            let stores = [];
            if(res){
             console.log(stores)
@@ -40,7 +46,7 @@ export const CustomerStorePage = (porps) =>{
                    name : store.name,
                    revenue  : store.revenue,
                    expend : false,
-                   itemList: []
+                   itemList: store.itemList
                 } 
                 stores[store.id]=storeItem;
             }
@@ -51,6 +57,20 @@ export const CustomerStorePage = (porps) =>{
             //here when you reject the promise
             alert(rej)
           })
+          /*setStores({
+             1:{
+               "id": 1,
+               "name": "Apple Store",
+               "revenue": 0.0,
+               "items": []
+             },
+             2:{
+               "id": 1,
+               "name": "Apple Store",
+               "revenue": 0.0,
+               "items": []
+             }
+          })*/
        }
     }
 
@@ -65,7 +85,6 @@ export const CustomerStorePage = (porps) =>{
 
     return(
      <div>
-         <CustomerToolBar/>
           <Grid container spacing={4} style={{width:"80%", margin:"10%", marginTop:"10px"}}>
           {
           stores && 
@@ -73,7 +92,7 @@ export const CustomerStorePage = (porps) =>{
              const store = stores[key]    
              return(
               <Grid index = {index} item xs={10} sm={6} md={6}>       
-             <StoreCard name={store.name} index ={index}/>
+             <StoreCard handleClick={props.handleSelect} id ={store.id} name={store.name} index ={index}/>
               </Grid>
              )  
           })

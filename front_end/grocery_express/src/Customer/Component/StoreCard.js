@@ -22,7 +22,7 @@ export const StoreCard = (props)=> {
     <Card style={props.style} sx={{ maxWidth: 380 }}>
       <CardActionArea
         onClick={() => {
-          navigate(`/Chuying/${props.name}`);
+          props.handleClick(props.id);
         }}
       >
         <CardMedia

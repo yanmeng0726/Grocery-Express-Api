@@ -18,6 +18,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {getStores, addStore} from '../req/Utils'
 import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
+import {logIn} from '../req/Utils'
 
 export const Login =(props) =>{
   const[showPsw, setShowPsw] = useState(false);
@@ -38,15 +39,28 @@ export const Login =(props) =>{
 
   const handleLogin =() =>{
     //currently use username: yuzuru  psw: 123
-    if(name == "yuzuru"&& psw == "12345"){
-        console.log(props.loggedin)
-        props.handleLogin(true);
-        localStorage.setItem('user', 'lkjkajksjdkjaksjkda')
-        window.location.href = "/Manager"
+    if(name === "lucyl" && psw == 12345)
+    {
+      const hardcodeToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaHV5aW5nbEBnbWFpbC5jb20iLCJpYXQiOjE2Mzg1NjU1MDIsImV4cCI6MTYzOTE3MDMwMn0.XBJ2Y5icswF4UtcPL_RD_yrwB9kHNDA4_qfpVxZFvKBoYb1s_Y119xT6HHE9TzKB36lzqRAjBEuuU3hCte8CHA"
+      props.handleLogin(true, {name: "Yuzuru", email: "aaa@gmail.com", isManager: true, userId:"1", credits: 500}, hardcodeToken)
     }
-    else{
-        props.handleLogin(false);
-    }
+    /*logIn(name,psw).then(
+      (res)=>{
+        console.log(res)
+        if(res["accessToken"]){
+          const token = res["accessToken"]
+          //use hardcode token first
+          
+          props.handleLogin(true, {name: "Yuzuru", email: "aaa@gmail.com", isManager: true}, "")
+        }
+      }
+    ).
+    catch(
+      (err)=>{
+        console.log(err)
+        alert("Please enter the correct user name or password")
+      }
+    )*/
   }
  
   return (

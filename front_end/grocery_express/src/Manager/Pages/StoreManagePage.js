@@ -17,9 +17,11 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import {StoreItem} from "../Component/StoreItem"
+import { StoreContext } from '../../StoreContext';
 
 
 export const StoreManagePage = (porps) =>{
+    const store= useContext(StoreContext)
     const [stores, setStores] = useState(null);
     const [newStoreDlgOpen, setNewStroeDlgOpen] = useState(false); 
     const [newItemDlgOpen, setNewItemDlgOpen ] = useState(false);
@@ -39,7 +41,11 @@ export const StoreManagePage = (porps) =>{
    const initStores =() => {
        console.log('get data')
        if(isMounted.current){
-         getStores().then((res)=>{
+         var session ="";
+         if(store.session){
+           session=stores.session
+         }
+         getStores(session).then((res)=>{
            let stores = [];
            if(res){
              console.log(res)
