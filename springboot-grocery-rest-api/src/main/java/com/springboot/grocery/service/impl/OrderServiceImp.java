@@ -94,6 +94,7 @@ public class OrderServiceImp implements OrderService {
         orderRepository.delete(order);
     }
 
+    //assign pilot and drone
     @Override
     public OrderDto updateOrder(long store_id, long order_id, OrderDto orderRequest) {
         Store store = storeRepository.findById(store_id).orElseThrow(
@@ -105,11 +106,31 @@ public class OrderServiceImp implements OrderService {
         if(orderRequest.getDrone_id() != null){
             Drone drone = droneRepository.findById(orderRequest.getDrone_id()).orElseThrow(
                     () -> new ResourceNotFoundException("Drone", "id", orderRequest.getDrone_id()));
+            if(!drone.getStore().getId().equals(store.getId())){
+                throw new GroceryAPIException(HttpStatus.BAD_REQUEST, "Drone does not belongs to store");
+            }
+
+            if(drone.getStatus() != 1){
+                drone.setStatus(1);
+                drone.setTrips_left(drone.getTrips_left()-1);
+                droneRepository.save(drone);
+            }
+
         }
+
+
 
         if(orderRequest.getEmployee_id() != null){
             Employee employee = employeeRepository.findById(orderRequest.getEmployee_id()).orElseThrow(
                     () -> new ResourceNotFoundException("Employee", "id", orderRequest.getEmployee_id()));
+            if(!employee.getStore().getId().equals(store.getId())){
+                throw new GroceryAPIException(HttpStatus.BAD_REQUEST, "Employee does not belongs to store");
+            }
+
+            if(employee.getIs_free()){
+                employee.setIs_free(false);
+                employeeRepository.save(employee);
+            }
         }
         order.setOrder_status(orderRequest.getOrder_status());
         order.setDrone_id(orderRequest.getDrone_id());
