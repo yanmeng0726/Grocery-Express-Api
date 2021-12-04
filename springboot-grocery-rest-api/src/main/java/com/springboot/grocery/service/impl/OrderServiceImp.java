@@ -53,6 +53,8 @@ public class OrderServiceImp implements OrderService {
         }
 
         order.setStore(store);
+
+
         OrderDto newOrder = mapToDTO(orderRepository.save(order));
         newOrder.setStore_id(store_id);
         return newOrder;

@@ -47,13 +47,14 @@ public class LineServiceImp implements LineService {
 
         User user =  userRepository.findById(order.getUser_id()).get();
         double orderCost = 0.00;
+        double orderWeight = 0.00;
         for (int i = 0; i < linesDto.getLines().size(); i++) {
             long id = linesDto.getLines().get(i).getItem_id();
             Item item = itemRepository.findById(id).orElseThrow(
                     ()->new ResourceNotFoundException("item","id",id)
             );
             orderCost += linesDto.getLines().get(i).getQuantity() * item.getUnit_price();
-        }
+            orderWeight += linesDto.getLines().get(i).getQuantity() * item.getWeight();}
 
         double adjustedCredit = user.getCredits() - orderCost;
         if(adjustedCredit < 0){
@@ -61,6 +62,9 @@ public class LineServiceImp implements LineService {
         }
         user.setCredits(adjustedCredit);
         userRepository.save(user);
+        order.setTotal_weight(orderWeight);
+        order.setTotal_cost(orderCost);
+        orderRepository.save(order);
 
         linesDto.getLines().stream().forEach((lineDto)->{
             Line line = mapToEntity(lineDto);

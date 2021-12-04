@@ -13,9 +13,7 @@ public class OrderDto {
     private Long store_id;
     private Long drone_id;
     private Long employee_id;
-    @NotNull
     private double total_cost;
-    @NotNull
     private double total_weight;
     @NotNull
     private int order_status;
