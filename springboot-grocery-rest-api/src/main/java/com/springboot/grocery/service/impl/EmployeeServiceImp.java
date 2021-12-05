@@ -8,7 +8,6 @@ import com.springboot.grocery.payload.EmployeeDto;
 import com.springboot.grocery.repository.EmployeeRepository;
 import com.springboot.grocery.repository.StoreRepository;
 import com.springboot.grocery.service.EmployeeService;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ public class EmployeeServiceImp implements EmployeeService {
 
     private EmployeeRepository employeeRepository;
     private StoreRepository storeRepository;
-    private ModelMapper mapper;
 
 
     public EmployeeServiceImp(StoreRepository storeRepository,EmployeeRepository employeeRepository) {
