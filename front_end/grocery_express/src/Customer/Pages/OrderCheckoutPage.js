@@ -103,7 +103,7 @@ export function OrderCheckoutPage(props) {
     console.log(context.store)
     startaNewOrder(storeId, totalPrice, totalWeight, userId, session).then((res)=>{
       console.log('start order', res)
-      props.checkoutCallback()}
+      props.checkoutCallback(res)}
     ).catch( 
      (e)=>{alert("There is an unexpected error when start a order, please try later.Thanks!")})
   }

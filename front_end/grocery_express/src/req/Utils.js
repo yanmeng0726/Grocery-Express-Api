@@ -2,7 +2,7 @@ import {getRequest, postRequest} from './req'
 
 
 export function getStores(token) {
-    return getRequest('http://localhost:8080/stores');
+    return getRequest('http://localhost:8080/stores', {}, token);
 }
 
 export function getItemsofStore(storeId, token){
@@ -37,6 +37,6 @@ export function startaNewOrder(storeId, totalPrice, totalWeight, userId, token){
         total_cost: totalPrice,
         total_weight: totalWeight,
         order_status: 1,
-        user_id:userId
+        user_id:1
     },token)
 }

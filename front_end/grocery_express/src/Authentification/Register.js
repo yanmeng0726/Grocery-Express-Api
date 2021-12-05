@@ -18,11 +18,23 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {getStores, addStore} from '../req/Utils'
 import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
-
+/*{
+  "name": "chuchuz",
+  "email": "chuyingl.lll",
+  "phone": "951-892-0434",
+  "username": "chuyingl@ggg.com",
+  "password": "string",
+  "address": "california",
+  "customer_rating": 5,
+  "credits": 1255,
+  "is_manager":false
+*/
 export const Register =(props) =>{
   const[showPsw, setShowPsw] = useState(false);
   const[psw, setPsw] = useState('');
   const[name, setName] = useState(''); 
+  const[email,setEmail] = useState('');
+  
 
   const handlePswChange = (event)=>{
       setPsw(event.target.value)
@@ -31,6 +43,10 @@ export const Register =(props) =>{
   const hanldeNameChange =(event) =>{
       setName(event.target.value);
   } 
+
+  const hanldeEmailChange =(event) =>{
+    setEmail(event.target.value);
+ } 
 
   const handleShowPsw = () => {
       setShowPsw(!showPsw);
@@ -46,6 +62,27 @@ export const Register =(props) =>{
             style={{marginLeft: "2%", width:"242px"}}
             value={name}
             onChange={hanldeNameChange}
+          /> </div>
+           <div style={{display: "flex", alignItems:"baseline", position:"relative", left:"35%"}}> 
+         <InputLabel >Email</InputLabel>
+          <Input
+            style={{marginLeft: "2%", width:"242px"}}
+            value={email}
+            onChange={hanldeEmailChange}
+          /> </div>
+          <div style={{display: "flex", alignItems:"baseline", position:"relative", left:"35%"}}> 
+         <InputLabel >First Name</InputLabel>
+          <Input
+            style={{marginLeft: "2%", width:"242px"}}
+            value={email}
+            onChange={hanldeEmailChange}
+          /> </div>
+          <div style={{display: "flex", alignItems:"baseline", position:"relative", left:"35%"}}> 
+         <InputLabel >First Name</InputLabel>
+          <Input
+            style={{marginLeft: "2%", width:"242px"}}
+            value={email}
+            onChange={hanldeEmailChange}
           /> </div>
            <div style={{display: "flex", alignItems:"baseline", marginTop:"20px", position:"relative", left:"36%"}}> 
           <InputLabel >Password</InputLabel>

@@ -41,7 +41,7 @@ export function getRequest(url, headers, token){
     req.open('GET', url , true);
     req.setRequestHeader('Content-Type', 'appilication/json;charset-UTF-8');
     req.setRequestHeader('Accept', 'application/json');
-    req.setRequestHeader('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaHV5aW5nbEBnbWFpbC5jb20iLCJpYXQiOjE2Mzg1NzEwMjUsImV4cCI6MTYzOTE3NTgyNX0.-EhV8-eYPsWH1PByzE1lJbmlNJtZwnsFgpMdJ1A4WBRXc5mRmcBGTJ0V8hgX068ufLPLHsk952iPbkEqK0kd7Q')
+    req.setRequestHeader('Authorization', `Bearer ${token}`)
     //handle more headers
     const moreHeaders = Object.keys(headers);
     moreHeaders.forEach((key) => {req.setRequestHeader(key, headers[key])});

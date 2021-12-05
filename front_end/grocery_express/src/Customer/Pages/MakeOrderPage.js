@@ -18,6 +18,7 @@ import { CustomerStorePage } from './CustomerStorePage';
 import { StoreItemsPage } from './StoreItemsPage';
 import { NewOrderPopup} from '../Component/NewOrderPopup'
 import { OrderCheckoutPage } from './OrderCheckoutPage';
+import {OrderConfirmPage} from './OrderConfirmPage'
 
 
 
@@ -28,6 +29,7 @@ export  function CustomerOrderPage () {
     const [skipped, setSkipped] = useState(new Set());
     const [selectedStoreId, setSelectedStoreId] = useState(-1)
     const [newOrderPopupOpen, setNewOrderPopupOpen] = useState(false);
+    const [createdOrder, setCreatedOrder]= useState({})
     const store = useContext(StoreContext);
 
     const isStepSkipped = (step) => {
@@ -97,8 +99,11 @@ export  function CustomerOrderPage () {
       setActiveStep(0);
     };
 
-    const checkoutCallback =()=>{
-       setActiveStep(3) 
+    const checkoutCallback =(order)=>{
+       setActiveStep(3)
+       if(order){
+          setCreatedOrder(order);
+       } 
     }
   
     return (
@@ -141,6 +146,7 @@ export  function CustomerOrderPage () {
                 <StoreItemsPage storeId ={selectedStoreId}/>
                }
                {activeStep ===2 && <OrderCheckoutPage checkoutCallback={checkoutCallback}/>}
+               {activeStep ===3 && createdOrder && createdOrder.id && <OrderConfirmPage order={createdOrder}/>}
             </div>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               {activeStep<3 &&<Button
