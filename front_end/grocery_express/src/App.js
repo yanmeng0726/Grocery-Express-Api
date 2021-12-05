@@ -5,6 +5,10 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { ManagerMain } from './Manager/ManagerMain'
+import { CustomerMain} from './Customer/CustomerMain'
+import {CustomerOrderPage} from './Customer/Pages/MakeOrderPage'
+import {OrderStatusPage} from './Customer/Pages/OrdersStatusPage'
+import { CustomerInfoPage } from './Customer/Pages/CustomerInfoPage';
 import { ChuyingWorkSpace } from './ChuyingWS/ChuyingWorkSpace'
 import { HuangqiWorkSpace } from './HuangqiWS/HuangqiWorkSpace'
 import {Login} from '../src/Authentification/Login'
@@ -16,6 +20,11 @@ import * as Crypto from 'crypto-js'
 import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
 import  Button from '@mui/material/Button';
 import {getStores} from './req/Utils'
+import {RequireAuth} from './Authentification/RequireAuth'
+import { useNavigate } from "react-router-dom";
+import { CustomerStorePage } from './Customer/Pages/CustomerStorePage';
+
+
 
 function App() {
   const [value, setValue] = React.useState(window.location.pathname);
@@ -25,46 +34,24 @@ function App() {
   })
   const [testData, setTestData] = React.useState([]);
   const contextStore= {store, setStore};
-
-  /*setStoreData: (data)=>{
-    const newstore = {
-      ...store,
-      ...data,
-    };
-    setStore(
-      newstore
-    );
-    console.log('add new store', store)
-    setloggedin(!!(newstore.user && newstore.user.name));
-  },*/
   
-  const initStores =() => {
-    console.log('get data')
-      /*var session =""
-      if(store.session){
-         session = store.session;
-      }*/
-      // add auth token here 
-      var token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaHV5aW5nbEBnbWFpbC5jb20iLCJpYXQiOjE2Mzg2NjI3MjcsImV4cCI6MTYzOTI2NzUyN30.lhY2Lq0AHLgAdBeIQk04Nsw5ldYOKX6msg-R8bBDC7RqqqkTUUl-NhLjSUOGO7TuxHAasTzKbkJF9zEz1DdJJA"
-      getStores(token).then((res)=>{
-        let stores = [];
-        if(res){
-          console.log(res);
-          setTestData(res)
-        }
-       }
-      ).catch(function(rej) {
-         //here when you reject the promise
-         alert(rej)
-       })
-  }
-  const routes = ['/Manager', '/Chuying', '/Huangqi']
-
   useEffect(() => {
+    console.log(
+      'here'
+    )
     const loggedInUser = localStorage.getItem("user");
-    console.log(loggedInUser)
-    if (loggedInUser) {
-      setloggedin(true);
+    const token =  localStorage.getItem("token");
+    if(loggedInUser && token){
+      const userData = decryptInfo(loggedInUser, token);
+      if(userData.user_id){
+        setloggedin(true);
+        var newstore = {
+          user: userData,
+          session: token,
+          loggedin: loggedin
+        }
+        setStore(newstore)
+      }
     }
   }, []);
 
@@ -73,19 +60,29 @@ function App() {
     setValue(newValue);
   };
 
+  /*{"accessToken":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaHV5aW5nQGxsbC5jb20iLCJpYXQiOjE2Mzg2Njk4ODksImV4cCI6MTYzOTI3NDY4OX0.ESUWH3Qwf6wcUZgHoFli9fbUbC6mJXNODqRwy4mxrlGRnuDCy6wrAMwSO3mmdb3Ce5hUAJHrO6gwb-TBlCglZA",
+  "tokenType":"Bearer","user_id":5,
+  "name":"August","username":"August lu",
+  "email":"chuying@lll.com","phone":"1234567","address":"cali","customer_rating":"1000","credits":1000.0,"is_manager":false}*/
 
-  const handleLogin = (loggedin, userData, session) =>{
-    console.log(loggedin, userData, session)
+  const handleLogin = (loggedin, loginRes) =>{
     if(loggedin){
-      var newstore = {
-        user: userData,
-        session: session
+      var session    
+      if(loginRes.accessToken){
+        session =loginRes.accessToken
       }
-      localStorage.setItem('user', encryptInfo(userData,session));
+      var newstore = {
+        user: loginRes,
+        session: session,
+        loggedin: loggedin
+      }
+      console.log('here')
+      localStorage.setItem('user', encryptInfo(newstore.user,session));
+      localStorage.setItem('token', session)
     }
     setStore(newstore);
+    console.log("newstore",newstore);
     setloggedin(loggedin)
-    window.location.href='/Chuying'
   }
 
   const encryptInfo = (userData, session)=>{
@@ -97,36 +94,29 @@ function App() {
     var decryptedData =JSON.parse(bytes.toString(Crypto.enc.Utf8));
     return decryptedData;
   }
-  
-  return (
-    <div>
-    <Button variant="contained" onClick={()=>{initStores()}}>Test</Button>
-    {
-      testData.map((data)=>{
-        { console.log(data)
-        return(<div>{data.name}</div>)}
-      })
-    }
-    </div>
-  );
  
-  /*return (
+  return (
     <div className="App">
     <StoreContextProvider value={contextStore}>  
     <BrowserRouter>
      <Routes>
-      {<Route path = "Login" element={<Login loggedin={true} handleLogin={handleLogin}/>}></Route>}
+      {!loggedin&&<Route path = "/" element={<Login loggedin={loggedin} handleLogin={handleLogin}/>}></Route>}
+      {<Route path = "Login" element={<Login loggedin={loggedin} handleLogin={handleLogin}/>}></Route>}
       {<Route path = "Register" element={<Register/>} />}
-      {<Route path="Manager" element={<ManagerMain/>}/>}
-      {<Route path="Chuying" element={<Register/>} />}
+      {<Route path="Manager" element={<RequireAuth><ManagerMain/></RequireAuth>}/>}
+      <Route path="Customer" element={<RequireAuth><CustomerMain/></RequireAuth>}>
+         <Route path="MakeOrder" element={<RequireAuth><CustomerOrderPage/></RequireAuth>}/>
+         <Route path= "Status" element={<RequireAuth><OrderStatusPage/></RequireAuth>}/>
+         <Route path="Account" element={<RequireAuth><CustomerInfoPage/></RequireAuth>}/>
+      </Route>
+      {<Route path="Chuying" element={<RequireAuth><ManagerMain/></RequireAuth>}/>}
       {<Route path="Chuying/:storeName" element={<StoreItemsPage/>} />}
       {<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}  
-      {<Route path ="*" element={<Navigate to='Chuying' />}  />}
     </Routes>
     </BrowserRouter>
     </StoreContextProvider> 
     </div>
-  );*/
+  );
 }
 
 export default App;

@@ -77,11 +77,12 @@ export function OrderCheckoutPage(props) {
     getMaxLoadDrone(storeId, session).then(
         (res)=>{
            setMaxWeight(res)
-
         }
     ).catch(
         ()=>{
           alert("Oops! Fail to get available drones!")
+          props.resetOrder();
+
         }
     ) 
   }
@@ -98,15 +99,18 @@ export function OrderCheckoutPage(props) {
         return;
     }
     var storeId = context.store.pendingOrders.storeId;
-    var userId = context.store.user.userId;
+    var userId = context.store.user.user_id;
     var session =context.store.session
     console.log(context.store)
     startaNewOrder(storeId, totalPrice, totalWeight, userId, session).then((res)=>{
-      console.log('start order', res)
+      console.log('start order', context.store.pendingOrders)
+      //we have to save our temprary data in local storage
+      
       props.checkoutCallback(res)}
     ).catch( 
      (e)=>{alert("There is an unexpected error when start a order, please try later.Thanks!")})
   }
+
   return (
       <div>
     <TableContainer component={Paper}>

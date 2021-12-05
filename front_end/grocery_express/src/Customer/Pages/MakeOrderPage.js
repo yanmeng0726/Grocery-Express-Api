@@ -56,6 +56,7 @@ export  function CustomerOrderPage () {
       // check if there is already one pending order?
       if(store.store.pendingOrders && store.store.pendingOrders.storeId !== storeId){
          handleOpenNewOrderPopup(storeId)
+         return
       }
       if(store.store.pendingOrders && store.store.pendingOrders.storeId == storeId){
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -105,10 +106,19 @@ export  function CustomerOrderPage () {
           setCreatedOrder(order);
        } 
     }
+
+    const resetOrder =() =>{
+      delete store.store['pendingOrders']  
+      var newStores={
+        ...store.store,
+      }
+      store.setStore(newStores)
+      setActiveStep(0);
+    }
   
     return (
       <Box sx={{ width: '100%' }}>
-        <CustomerToolBar/>
+        
         <Stepper style={{marginTop:"10px"}} activeStep={activeStep}>
           {steps.map((label, index) => {
             const stepProps = {};
@@ -145,7 +155,7 @@ export  function CustomerOrderPage () {
                {activeStep ===1 && selectedStoreId !== -1 &&
                 <StoreItemsPage storeId ={selectedStoreId}/>
                }
-               {activeStep ===2 && <OrderCheckoutPage checkoutCallback={checkoutCallback}/>}
+               {activeStep ===2 && <OrderCheckoutPage checkoutCallback={checkoutCallback} resetOrder={resetOrder}/>}
                {activeStep ===3 && createdOrder && createdOrder.id && <OrderConfirmPage order={createdOrder}/>}
             </div>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -158,7 +168,7 @@ export  function CustomerOrderPage () {
                 Back
               </Button>}
               <Box sx={{ flex: '1 1 auto' }} />
-              {activeStep<3 &&<Button disabled={activeStep== 2}onClick={handleNext}>
+              {activeStep<3 &&<Button disabled={activeStep== 2 || selectedStoreId ==-1}onClick={handleNext}>
                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
               </Button>}
             </Box>

@@ -26,11 +26,14 @@ export const CustomerStorePage = (props) =>{
     }, []) // before the pafed loaded, get data from the server
   
    const initStores =() => {
-       console.log('get data')
+       console.log('get data', store)
        if(isMounted.current){
          var session =""
-         if(store.session){
-            session = store.session;
+         if(store.store.session){
+            session = store.store.session;
+         }
+         else{
+            session=localStorage.getItem('token');
          }
          getStores(session).then((res)=>{
            let stores = [];

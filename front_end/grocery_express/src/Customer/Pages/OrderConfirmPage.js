@@ -16,9 +16,10 @@ import congrat from '../../Assets/status.jpg'
 import CheckIcon from '@mui/icons-material/Check';
 import Grid from '@mui/material/Grid';
 import { Divider } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
 
 export  function OrderConfirmPage(props) {
-    console.log(props)
+    
     return (
       <Box
         sx={{
@@ -33,7 +34,7 @@ export  function OrderConfirmPage(props) {
         }}
       >
         <Paper elevation={3} > 
-          <Grid><Grid><h2>{'You created a new order!'}</h2></Grid></Grid>
+          <Grid><Grid><StarIcon style={{color:"gold", fontSize:"70px"}}/></Grid><h2 style={{color:"grey"}}>{'You created a new order!'}</h2></Grid>
           <Divider/>
           <Grid alignItems="center" justifyContent="center" spacing={4} style={{display: "flex", width : "100%"}}>
               <Grid><h4>order id:</h4></Grid>

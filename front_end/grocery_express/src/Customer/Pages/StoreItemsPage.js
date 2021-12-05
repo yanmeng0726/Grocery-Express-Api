@@ -13,7 +13,7 @@ import { StoreContext } from '../../StoreContext';
 
 export const StoreItemsPage = (props) =>{
     const store = useContext(StoreContext);
-    const [items, setItems] = useState(null);
+    const [items, setItems] = useState({});
     const isMounted = useRef(false);
     useEffect(() => {
       isMounted.current = true;
@@ -24,7 +24,15 @@ export const StoreItemsPage = (props) =>{
     }, []) // before the pafed loaded, get data from the server
   
    const loadItems =() => {
-       getItemsofStore(props.storeId, store.session).then(
+       console.log(store)
+       var session =""
+         if(store.store.session){
+            session = store.store.session;
+         }
+         else{
+            session=localStorage.getItem('token');
+         }
+       getItemsofStore(props.storeId, session).then(
          (res)=>{
            console.log(res)
            var newItems = {}
@@ -45,14 +53,15 @@ export const StoreItemsPage = (props) =>{
      <div>
           <Grid><h1>{props.storeName}</h1></Grid>
           <Grid style={{position:"relative", left:"20%", height: "70%"}}justifyContent="center">
-          {items && 
+          { items && Object.keys(items).length>0 ?
              Object.keys(items).map((key,index)=>{
              var item = items[key];   
              return(  
               <CartItem key ={index} id={item.id} storeId ={props.storeId} name={item.name} price={item.unit_price} weight={item.weight}/>
              )  
-          })
-          }
+          }) :
+           <Grid>There is no item in this store</Grid>
+           } 
        </Grid>
      </div>
     );

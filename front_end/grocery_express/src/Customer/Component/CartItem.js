@@ -16,7 +16,7 @@ export const CartItem = (props) =>
     React.useEffect(()=>{
         // check current quantuty in pending orders
         console.log('Im here')
-        if(context.store.pendingOrders || context.store.pendingOrders.storeId === props.storeId){
+        if(context.store.pendingOrders && context.store.pendingOrders.storeId === props.storeId){
             console.log(context.store.pendingOrders)
             var pendingOrders= context.store.pendingOrders
             if(pendingOrders.items && Object.keys(pendingOrders.items).length>0){
