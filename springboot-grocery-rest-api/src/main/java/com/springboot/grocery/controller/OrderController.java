@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -23,6 +24,11 @@ public class OrderController {
                                                 @Valid @RequestBody OrderDto orderDto){
 
         return new ResponseEntity<>(orderService.createOrder(store_id, orderDto), HttpStatus.CREATED);
+    }
+    @GetMapping
+    public List<OrderDto> getOrdersByStoreId(@PathVariable(value = "store_id") long store_id){
+
+        return orderService.getOrdersByStoreId(store_id);
     }
 
 
