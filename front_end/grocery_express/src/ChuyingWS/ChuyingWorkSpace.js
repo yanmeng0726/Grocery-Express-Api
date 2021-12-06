@@ -11,11 +11,14 @@ import {CustomerStorePage} from '../Customer/Pages/CustomerStorePage'
 import { CartItem } from '../Customer/Component/CartItem';
 import { StoreItemsPage } from '../Customer/Pages/StoreItemsPage';
 import { CustomerOrderPage } from '../Customer/Pages/MakeOrderPage'
+import {OrderItem} from '../Manager/Component/OrderItem'
+import { AssignOrderPage } from '../Manager/Pages/AssignOrderpPage';
+
 export const ChuyingWorkSpace =(props) =>{
   
   return (
     <div>
-        <CustomerOrderPage/>
+        <AssignOrderPage/>
     </div>    
   );
 }

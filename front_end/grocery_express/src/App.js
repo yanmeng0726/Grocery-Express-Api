@@ -109,7 +109,7 @@ function App() {
          <Route path= "Status" element={<RequireAuth><OrderStatusPage/></RequireAuth>}/>
          <Route path="Account" element={<RequireAuth><CustomerInfoPage/></RequireAuth>}/>
       </Route>
-      {<Route path="Chuying" element={<RequireAuth><ManagerMain/></RequireAuth>}/>}
+      {<Route path="Chuying" element={<ChuyingWorkSpace/>}/>}
       {<Route path="Chuying/:storeName" element={<StoreItemsPage/>} />}
       {<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}  
     </Routes>
