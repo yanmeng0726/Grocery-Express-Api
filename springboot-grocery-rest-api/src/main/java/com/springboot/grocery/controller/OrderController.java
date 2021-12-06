@@ -4,6 +4,7 @@ import com.springboot.grocery.payload.OrderDto;
 import com.springboot.grocery.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +26,8 @@ public class OrderController {
 
         return new ResponseEntity<>(orderService.createOrder(store_id, orderDto), HttpStatus.CREATED);
     }
+
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping
     public List<OrderDto> getOrdersByStoreId(@PathVariable(value = "store_id") long store_id){
 
