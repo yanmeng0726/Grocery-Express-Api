@@ -6,10 +6,14 @@ import {CustomerToolBar} from "../Component/CustomerToolBar"
 import {StoreCard} from "../Component/StoreCard"
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import { stepConnectorClasses } from '@mui/material';
+import { StoreContext } from '../../StoreContext';
 
 
-export const CustomerStorePage = (porps) =>{
-    const [stores, setStores] = useState([]);
+
+export const CustomerStorePage = (props) =>{
+    const store = useContext(StoreContext)
+    const [stores, setStores] = useState(null);
     const [newStoreDlgOpen, setNewStroeDlgOpen] = useState(false); 
     const isMounted = useRef(false);
     
@@ -22,11 +26,19 @@ export const CustomerStorePage = (porps) =>{
     }, []) // before the pafed loaded, get data from the server
   
    const initStores =() => {
-       console.log('get data')
+       console.log('get data', store)
        if(isMounted.current){
-         getStores().then((res)=>{
+         var session =""
+         if(store.store.session){
+            session = store.store.session;
+         }
+         else{
+            session=localStorage.getItem('token');
+         }
+         getStores(session).then((res)=>{
            let stores = [];
            if(res){
+            console.log(stores)
              const keys = Object.keys(res)
              console.log(keys);
              for ( let i = 0; i<keys.length ; i++){
@@ -35,9 +47,11 @@ export const CustomerStorePage = (porps) =>{
                 {
                    id : store.id,
                    name : store.name,
-                   revenue  : store.revenue
+                   revenue  : store.revenue,
+                   expend : false,
+                   itemList: store.itemList
                 } 
-                stores.push(storeItem);
+                stores[store.id]=storeItem;
             }
             setStores(stores);
            }
@@ -46,28 +60,23 @@ export const CustomerStorePage = (porps) =>{
             //here when you reject the promise
             alert(rej)
           })
+          /*setStores({
+             1:{
+               "id": 1,
+               "name": "Apple Store",
+               "revenue": 0.0,
+               "items": []
+             },
+             2:{
+               "id": 1,
+               "name": "Apple Store",
+               "revenue": 0.0,
+               "items": []
+             }
+          })*/
        }
     }
 
-    const confirmAddStore = (storeName) =>{
-        addStore(storeName).then((res)=>{
-             alert("Add a store successfuly!")
-                let storeItem = 
-                {
-                   id : res.id,
-                   name : res.name,
-                   revenue  : res.revenue
-                } 
-                stores.push(storeItem);
-                closeNewStoreDlg();
-                setStores(stores);
-             //update the store list
-           }
-          ).catch((e)=>{
-              alert(e)
-              closeNewStoreDlg();
-            })    
-    }
 
     const openNewStoreDlg =() =>{
        setNewStroeDlgOpen(true); 
@@ -79,14 +88,14 @@ export const CustomerStorePage = (porps) =>{
 
     return(
      <div>
-         <CustomerToolBar/>
           <Grid container spacing={4} style={{width:"80%", margin:"10%", marginTop:"10px"}}>
-          {stores && 
-             stores.map((store,index)=>{
-             console.log(store)     
+          {
+          stores && 
+            Object.keys(stores).map((key,index)=>{
+             const store = stores[key]    
              return(
               <Grid index = {index} item xs={10} sm={6} md={6}>       
-             <StoreCard name={store.name} index ={index}/>
+             <StoreCard handleClick={props.handleSelect} id ={store.id} name={store.name} index ={index}/>
               </Grid>
              )  
           })

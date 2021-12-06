@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useContext} from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -18,14 +18,20 @@ import StoreIcon from '@mui/icons-material/Store';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import HistoryIcon from '@mui/icons-material/History';
 import { StoreItem } from '../../Manager/Component/StoreItem';
+import { useNavigate } from 'react-router-dom';
+import { StoreContext } from '../../StoreContext';
 
 
 
-export  function CustomerToolBar() {
+
+export  function CustomerToolBar(props) {
+  let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const context = useContext(StoreContext)
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -46,27 +52,19 @@ export  function CustomerToolBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleOpenMakeOrderPage =() =>{
+    navigate('MakeOrder')
+  }
+
+  const handleOpenOrderStatusPage =() =>{
+    navigate('Status')
+  }
+
+  const handleOpenAccountPage =() =>{
+    navigate('Account')
+  }
+
   const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -85,22 +83,22 @@ export  function CustomerToolBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={handleOpenMakeOrderPage}>
         <IconButton size="large" color="inherit"> 
-            <StoreIcon/>
+            <ShoppingBagIcon/>
         </IconButton>
         <p>Shop</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleOpenOrderStatusPage}>
         <IconButton
           size="large"
           color="inherit"
         >    
-            <ShoppingCartIcon/>
+            <HistoryIcon/>
         </IconButton>
-        <p>Cart</p>
+        <p>Orders</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={handleOpenAccountPage}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -137,27 +135,36 @@ export  function CustomerToolBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            Welcome! Micky
+            { `Welcome! ${context.store.user.username}`}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit"> 
-             <StoreIcon/>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+              title="Shop"
+              onClick = {handleOpenMakeOrderPage}
+            >
+                <ShoppingBagIcon/>
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
+              title= "Orders"
+              onClick ={handleOpenOrderStatusPage}
             >
-                <ShoppingCartIcon/>
+                <HistoryIcon/>
             </IconButton>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={handleOpenAccountPage}
               color="inherit"
+              title="Account"
             >
               <AccountCircle />
             </IconButton>
@@ -169,6 +176,7 @@ export  function CustomerToolBar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
+              title="logout"
             >
               <LogoutIcon/>
             </IconButton>
@@ -187,8 +195,7 @@ export  function CustomerToolBar() {
           </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {renderMobileMenu}  
     </Box>
   );
 }

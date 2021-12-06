@@ -67,6 +67,12 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public List<OrderDto> getOrdersByStoreId(long store_id) {
+        List<Order> orders = orderRepository.findByStoreId(store_id);
+        return orders.stream().map(order -> mapToDTO(order)).collect(Collectors.toList());
+    }
+
+    @Override
     public double getPendingIncomeByStoreId(long store_id) {
         List<Order> orders = orderRepository.getPendingIncomeByStoreId(store_id);
         double income = 0.00;

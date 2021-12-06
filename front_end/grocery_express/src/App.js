@@ -5,24 +5,53 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { ManagerMain } from './Manager/ManagerMain'
+import { CustomerMain} from './Customer/CustomerMain'
+import {CustomerOrderPage} from './Customer/Pages/MakeOrderPage'
+import {OrderStatusPage} from './Customer/Pages/OrdersStatusPage'
+import { CustomerInfoPage } from './Customer/Pages/CustomerInfoPage';
 import { ChuyingWorkSpace } from './ChuyingWS/ChuyingWorkSpace'
 import { HuangqiWorkSpace } from './HuangqiWS/HuangqiWorkSpace'
 import {Login} from '../src/Authentification/Login'
 import {Register} from "../src/Authentification/Register"
 import { FormControlUnstyled } from '@mui/core';
+import {StoreItemsPage} from './Customer/Pages/StoreItemsPage'
+import {StoreContextProvider, initData} from './StoreContext'
+import * as Crypto from 'crypto-js'
+import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
+import  Button from '@mui/material/Button';
+import {getStores} from './req/Utils'
+import {RequireAuth} from './Authentification/RequireAuth'
+import { useNavigate } from "react-router-dom";
+import { CustomerStorePage } from './Customer/Pages/CustomerStorePage';
+
 
 
 function App() {
   const [value, setValue] = React.useState(window.location.pathname);
   const [loggedin, setloggedin] = React.useState(false);
+  const [store, setStore] =React.useState({
+    ...initData
+  })
+  const [testData, setTestData] = React.useState([]);
+  const contextStore= {store, setStore};
   
-  const routes = ['/Manager', '/Chuying', '/Huangqi']
-
   useEffect(() => {
+    console.log(
+      'here'
+    )
     const loggedInUser = localStorage.getItem("user");
-    console.log(loggedInUser)
-    if (loggedInUser) {
-      setloggedin(true);
+    const token =  localStorage.getItem("token");
+    if(loggedInUser && token){
+      const userData = decryptInfo(loggedInUser, token);
+      if(userData.user_id){
+        setloggedin(true);
+        var newstore = {
+          user: userData,
+          session: token,
+          loggedin: loggedin
+        }
+        setStore(newstore)
+      }
     }
   }, []);
 
@@ -31,23 +60,61 @@ function App() {
     setValue(newValue);
   };
 
-  const handleLogin = (loggedin) =>{
-    console.log(loggedin)
+  /*{"accessToken":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaHV5aW5nQGxsbC5jb20iLCJpYXQiOjE2Mzg2Njk4ODksImV4cCI6MTYzOTI3NDY4OX0.ESUWH3Qwf6wcUZgHoFli9fbUbC6mJXNODqRwy4mxrlGRnuDCy6wrAMwSO3mmdb3Ce5hUAJHrO6gwb-TBlCglZA",
+  "tokenType":"Bearer","user_id":5,
+  "name":"August","username":"August lu",
+  "email":"chuying@lll.com","phone":"1234567","address":"cali","customer_rating":"1000","credits":1000.0,"is_manager":false}*/
+
+  const handleLogin = (loggedin, loginRes) =>{
+    if(loggedin){
+      var session    
+      if(loginRes.accessToken){
+        session =loginRes.accessToken
+      }
+      var newstore = {
+        user: loginRes,
+        session: session,
+        loggedin: loggedin
+      }
+      console.log('here')
+      localStorage.setItem('user', encryptInfo(newstore.user,session));
+      localStorage.setItem('token', session)
+    }
+    setStore(newstore);
+    console.log("newstore",newstore);
     setloggedin(loggedin)
   }
+
+  const encryptInfo = (userData, session)=>{
+    return Crypto.AES.encrypt(JSON.stringify(userData), session).toString();
+  }
+
+  const decryptInfo = (encodedString, session)=>{
+    var bytes = Crypto.AES.decrypt(encodedString, session)
+    var decryptedData =JSON.parse(bytes.toString(Crypto.enc.Utf8));
+    return decryptedData;
+  }
+ 
   return (
     <div className="App">
+    <StoreContextProvider value={contextStore}>  
     <BrowserRouter>
      <Routes>
-      {!loggedin &&<Route path = "Login" element={<Login loggedin={true} handleLogin={handleLogin}/>}></Route>}
-      {!loggedin &&<Route path = "Register" element={<Register/>} />}
-      {!loggedin &&<Route path = "*" element={ <Navigate to='Login' /> } />}
-      {loggedin &&<Route path = "*" element={ <Navigate to='Chuying' /> } />}
-      {loggedin && <Route path="Manager" element={<ManagerMain/>}/>}
-      {loggedin &&<Route path="Chuying" element={<ChuyingWorkSpace/>} />}
-      {loggedin &&<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}      
+      {!loggedin&&<Route path = "/" element={<Login loggedin={loggedin} handleLogin={handleLogin}/>}></Route>}
+      {<Route path = "Login" element={<Login loggedin={loggedin} handleLogin={handleLogin}/>}></Route>}
+      {<Route path = "Register" element={<Register/>} />}
+      {<Route path="Manager" element={<RequireAuth><ManagerMain/></RequireAuth>}/>}
+      <Route path="Customer" element={<RequireAuth><CustomerMain/></RequireAuth>}>
+         <Route path="MakeOrder" element={<RequireAuth><CustomerOrderPage/></RequireAuth>}/>
+         <Route path= "Status" element={<RequireAuth><OrderStatusPage/></RequireAuth>}/>
+         <Route path="Account" element={<RequireAuth><CustomerInfoPage/></RequireAuth>}/>
+      </Route>
+      {<Route path="Chuying" element={<RequireAuth><ManagerMain/></RequireAuth>}/>}
+      {<Route path="Chuying/:storeName" element={<StoreItemsPage/>} />}
+      {<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}  
     </Routes>
-    </BrowserRouter> 
+    </BrowserRouter>
+    </StoreContextProvider> 
     </div>
   );
 }

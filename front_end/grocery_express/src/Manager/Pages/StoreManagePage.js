@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useContext }   from 'react';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import {getStores, addStore} from '../../req/Utils'
+import {getStores, addStore, addItemToStore} from '../../req/Utils'
 import {NewStoreDialog} from '../Component/NewStorePopUp'
+import {NewItemDialog} from '../Component/NewItemPopUp'
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -16,11 +17,17 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import {StoreItem} from "../Component/StoreItem"
+import { StoreContext } from '../../StoreContext';
 
 
 export const StoreManagePage = (porps) =>{
-    const [stores, setStores] = useState([]);
+    const store= useContext(StoreContext)
+    const [stores, setStores] = useState(null);
     const [newStoreDlgOpen, setNewStroeDlgOpen] = useState(false); 
+    const [newItemDlgOpen, setNewItemDlgOpen ] = useState(false);
+    const [selectedStore, setSelectedStore ] = useState("");
+    const [selectedName, setSelctedName ] = useState("");
+
     const isMounted = useRef(false);
     
     useEffect(() => {
@@ -34,20 +41,26 @@ export const StoreManagePage = (porps) =>{
    const initStores =() => {
        console.log('get data')
        if(isMounted.current){
-         getStores().then((res)=>{
+         var session ="";
+         if(store.session){
+           session=stores.session
+         }
+         getStores(session).then((res)=>{
            let stores = [];
            if(res){
+             console.log(res)
              const keys = Object.keys(res)
-             console.log(keys);
              for ( let i = 0; i<keys.length ; i++){
                 let store = res[keys[i]];
                 let storeItem = 
                 {
                    id : store.id,
                    name : store.name,
-                   revenue  : store.revenue
+                   revenue  : store.revenue,
+                   expanded: false,
+                   itemList: store.items
                 } 
-                stores.push(storeItem);
+                stores[store.id]=storeItem;
             }
             setStores(stores);
            }
@@ -66,9 +79,11 @@ export const StoreManagePage = (porps) =>{
                 {
                    id : res.id,
                    name : res.name,
-                   revenue  : res.revenue
+                   revenue  : res.revenue,
+                   expanded: false,
+                   itemList: []
                 } 
-                stores.push(storeItem);
+                stores[res.id]=storeItem;
                 closeNewStoreDlg();
                 setStores(stores);
              //update the store list
@@ -79,6 +94,27 @@ export const StoreManagePage = (porps) =>{
             })    
     }
 
+    const confirmAddItem = (storeId, name, weight, price) =>{
+      addItemToStore(storeId,name,weight, price ).then(
+        (res)=>{
+          console.log(res)
+          let store = stores[storeId];
+          store.itemList.push(res);
+          stores[storeId]=store;
+          setStores(stores);
+          alert(`Add ${name} to ${selectedName} successfuly!`)
+          closeNewItemDlg();
+          //update stores   
+        }
+      ).catch(
+         (e) =>{
+           alert(e)
+           closeNewItemDlg();
+         }
+      )
+    }
+
+
     const openNewStoreDlg =() =>{
        setNewStroeDlgOpen(true); 
     }
@@ -87,17 +123,34 @@ export const StoreManagePage = (porps) =>{
        setNewStroeDlgOpen(false); 
     }
 
+    const openNewItemDlg =(storeId, name) =>{
+      setNewItemDlgOpen(true);
+      setSelectedStore(storeId);
+      setSelctedName(name);
+    }
+
+    const closeNewItemDlg =() =>{
+      setNewItemDlgOpen(false)
+    }
+
+    const expandCallback = (storeId, expanded) =>{
+      let store = stores[storeId]
+      store['expanded']=expanded;
+      stores[storeId] =store;
+      setStores(stores);
+    }
+
     return(
      <div>
-         <h>Store Management</h>
+         <h1>Store Management</h1>
          <Divider/>
-         <div style={{display:"flex"}}>
+         <div style={{display:"flex", position:"relative", left:'10%'}}>
            <div style ={{width : "60%"}}>
             {
-              stores.map((store) => {
-                console.log(store.name);
+              stores&&Object.keys(stores).map((key, index) => {
+                const store = stores[key];
                 return(
-                <StoreItem name= {store.name} revenue={store.revenue} expanded={false}/>)
+                <StoreItem key={index} id={store.id} name= {store.name} revenue={store.revenue} expanded={store.expanded} items={store.itemList} openDlg={openNewItemDlg} closeDlg={closeNewItemDlg} expandCallback={expandCallback}/>)
               })
             }
            </div>
@@ -107,6 +160,9 @@ export const StoreManagePage = (porps) =>{
          </div>
          {
              newStoreDlgOpen&& <NewStoreDialog open={newStoreDlgOpen} handleClose={closeNewStoreDlg} handleConfirm={confirmAddStore}/>
+         }
+         {
+             newItemDlgOpen && <NewItemDialog open ={newItemDlgOpen} handleClose={closeNewItemDlg} handleConfirm={confirmAddItem} id={selectedStore} name={selectedName}/>
          }        
      </div>
     );

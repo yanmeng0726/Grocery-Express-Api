@@ -4,9 +4,11 @@ import com.springboot.grocery.payload.OrderDto;
 import com.springboot.grocery.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -23,6 +25,13 @@ public class OrderController {
                                                 @Valid @RequestBody OrderDto orderDto){
 
         return new ResponseEntity<>(orderService.createOrder(store_id, orderDto), HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping
+    public List<OrderDto> getOrdersByStoreId(@PathVariable(value = "store_id") long store_id){
+
+        return orderService.getOrdersByStoreId(store_id);
     }
 
 

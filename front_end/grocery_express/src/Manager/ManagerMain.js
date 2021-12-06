@@ -1,10 +1,13 @@
 import * as React from 'react';
+import { StoreManagePage } from './Pages/StoreManagePage';
 
 
 export const ManagerMain = (props) => {
   return (
     <div>
-      <div>Manager Main Page</div>
+      <div>
+        <StoreManagePage/>
+      </div>
     </div>
   );
 }
