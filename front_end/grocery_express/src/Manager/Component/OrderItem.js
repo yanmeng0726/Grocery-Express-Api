@@ -17,16 +17,20 @@
       import {PilotDropdown} from '../Component/PilotDropdown'
       import {DroneDropdown} from '../Component/DroneDropdown'
       import {Box} from '@mui/material'
+import { PowerInputSharp } from '@mui/icons-material';
       
       export const  OrderItem =(props) =>{
         const [expanded, setExpanded] = React.useState(props.expanded)
-        const [pilot, setPilot] = React.useState(props.pilot? props.pilot:"")
-        const [drone, setDrone ]= React.useState(0)
+        const [pilot, setPilot] = React.useState(-1)
+        const [drone, setDrone ]= React.useState(-1)
           
-          const  handleExpand =() =>{
-            props.expandCallback(props.id, !expanded);
-            setExpanded(!expanded);   
+        const handleConfirm =()=>{
+          if(pilot===-1||drone ===-1){
+            alert("Please assign the order when there are available pilot or drone!")
+            return;
           }
+           props.handleAssign(props.storeId,props.storeId , pilot,drone)
+        }
 
           const status ={
              0: "Cancel",
@@ -42,7 +46,7 @@
                <div style={{display : "flex", width:"15%", marginLeft : '5%'}}>{<p><b>{`Status: `}</b>{status[props.status]}</p>}</div>        
                {props.status===1&&props.pilots.length>0 &&props.drones.length>0&&<div style={{marginLeft:"20px", marginLeft : '5%'}}><PilotDropdown pilot={pilot} pilots={props.pilots} setPilot={setPilot}/></div>}
                {props.status===1&&props.pilots.length>0&&props.drones.length>0&&<div style={{marginLeft:"20px", marginLeft : '5%'}}><DroneDropdown drone={drone} drones={props.drones} setDrone={setDrone}/></div>}
-                {props.status===1&&<div><Button onClick={()=>{props.openDlg(props.id, props.name)}}  style={{width:"150px", height:"60px"}}>Assign Order</Button></div>}
+                {props.status===1&&<div><Button onClick={handleConfirm}  style={{width:"150px", height:"60px"}}>Assign Order</Button></div>}
                { <IconButton >{
                  expanded?<FontAwesomeIcon icon={faChevronCircleDown}/>
                 :

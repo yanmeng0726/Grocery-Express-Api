@@ -12,7 +12,7 @@ import icon5 from '../../Assets/icon5.jpg'
 import icon6 from '../../Assets/icon6.jpg'
 import icon7 from '../../Assets/icon7.jpg'
 import icon8 from '../../Assets/icon8.jpg'
-import icon2 from '../../icon2.jpg'
+import icon2 from '../../Assets/icon2.jpg'
 import { useParams, useNavigate } from 'react-router-dom';
 
 

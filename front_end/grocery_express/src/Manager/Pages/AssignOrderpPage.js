@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useContext }   from 'react';
 import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
 import {getStores, addStore, addItemToStore} from '../../req/Utils'
 import {NewStoreDialog} from '../Component/NewStorePopUp'
 import {NewItemDialog} from '../Component/NewItemPopUp'
@@ -20,7 +19,7 @@ import {StoreItem} from "../Component/StoreItem"
 import { OrderItem } from '../Component/OrderItem';
 import { StoreContext } from '../../StoreContext';
 import { StoreDropdown } from '../Component/StoreDropDown';
-import { getUserOrders } from '../../req/Utils';
+import { getOrdersOfStore,assignOrder } from '../../req/Utils';
 
 
 export const AssignOrderPage = (porps) =>{
@@ -30,11 +29,8 @@ export const AssignOrderPage = (porps) =>{
     const [orders, setOrders ]= useState({});
     const [drones, setDrones] =useState([]);
     const [pilots, setPilots] =useState([]);
-    const [newStoreDlgOpen, setNewStroeDlgOpen] = useState(false); 
-    const [newItemDlgOpen, setNewItemDlgOpen ] = useState(false);
-    const [selectedStore, setSelectedStore ] = useState("");
-    const [selectedName, setSelctedName ] = useState("");
-
+    const [storeId, setStoreId] = useState(-1);
+    const userId = context.store.user.user_id;
     const isMounted = useRef(false);
     
     useEffect(() => {
@@ -80,15 +76,15 @@ export const AssignOrderPage = (porps) =>{
 
     const handleGetOrders = (storeId) =>{
         console.log(storeId)
-        getUserOrders(2,session).then((res)=>{
+        getOrdersOfStore(storeId,session).then((res)=>{
+            console.log(res)
             var newOrders={};
             res.map((order) => {
-                console.log(order)
               newOrders[order.id]= order
             })
-            console.log(newOrders)
-            setOrders(newOrders)
-           
+            console.log(newOrders);
+            setOrders(newOrders);
+            setStoreId(storeId);
             setPilots(stores[storeId].pilots);
             setDrones(stores[storeId].drones);
         }
@@ -97,73 +93,13 @@ export const AssignOrderPage = (porps) =>{
         )
     }
 
-    const confirmAddStore = (storeName) =>{
-        addStore(storeName).then((res)=>{
-             alert("Add a store successfuly!")
-                let storeItem = 
-                {
-                   id : res.id,
-                   name : res.name,
-                   revenue  : res.revenue,
-                   expanded: false,
-                   itemList: []
-                } 
-                stores[res.id]=storeItem;
-                closeNewStoreDlg();
-                setStores(stores);
-             //update the store list
-           }
-          ).catch((e)=>{
-              alert(e)
-              closeNewStoreDlg();
-            })    
+    const handleAssignOrder=(storeId,orderId,pilotId,droneId)=>{
+        console.log(storeId,orderId,pilotId,droneId)
+       assignOrder(storeId,orderId,pilotId,droneId,session).then((res)=>{console.log(res)})
+       .catch((err)=>{alert(err)})
     }
 
-    const confirmAddItem = (storeId, name, weight, price) =>{
-      addItemToStore(storeId,name,weight, price ).then(
-        (res)=>{
-          console.log(res)
-          let store = stores[storeId];
-          store.itemList.push(res);
-          stores[storeId]=store;
-          setStores(stores);
-          alert(`Add ${name} to ${selectedName} successfuly!`)
-          closeNewItemDlg();
-          //update stores   
-        }
-      ).catch(
-         (e) =>{
-           alert(e)
-           closeNewItemDlg();
-         }
-      )
-    }
-
-
-    const openNewStoreDlg =() =>{
-       setNewStroeDlgOpen(true); 
-    }
-
-    const closeNewStoreDlg =() =>{
-       setNewStroeDlgOpen(false); 
-    }
-
-    const openNewItemDlg =(storeId, name) =>{
-      setNewItemDlgOpen(true);
-      setSelectedStore(storeId);
-      setSelctedName(name);
-    }
-
-    const closeNewItemDlg =() =>{
-      setNewItemDlgOpen(false)
-    }
-
-    const expandCallback = (storeId, expanded) =>{
-      let store = stores[storeId]
-      store['expanded']=expanded;
-      stores[storeId] =store;
-      setStores(stores);
-    }
+   
     
     /*[{"id":13,"user_id":2,"store_id":1,"drone_id":null,"employee_id":null,"total_cost":100.27,"total_weight":30.26,"order_status":1,"lines":[]},*/
     return(
@@ -179,7 +115,7 @@ export const AssignOrderPage = (porps) =>{
               Object.keys(orders).map((key, index) => {
                 const order = orders[key];
                 return(
-                <OrderItem key={index} id={order.id} status={order.order_status} droneId={order.drone_id} pilot={order.emploee_id} drones={drones} pilots={pilots} openDlg={openNewItemDlg} closeDlg={closeNewItemDlg} expandCallback={expandCallback}/>)
+                <OrderItem key={index} id={order.id} status={order.order_status} userId={userId} storeId={storeId} droneId={order.drone_id} pilot={order.emploee_id} drones={drones} pilots={pilots} handleAssign={handleAssignOrder}/>)
               })
               :
               <div>There is no order to display!</div>
@@ -188,12 +124,7 @@ export const AssignOrderPage = (porps) =>{
            <div>
            </div>  
          </div>
-         {
-             newStoreDlgOpen&& <NewStoreDialog open={newStoreDlgOpen} handleClose={closeNewStoreDlg} handleConfirm={confirmAddStore}/>
-         }
-         {
-             newItemDlgOpen && <NewItemDialog open ={newItemDlgOpen} handleClose={closeNewItemDlg} handleConfirm={confirmAddItem} id={selectedStore} name={selectedName}/>
-         }        
+           
      </div>
     );
 }
