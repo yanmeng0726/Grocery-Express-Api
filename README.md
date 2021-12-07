@@ -8,6 +8,7 @@ to start api up, please run below command lines
   mvn package
   java -jar target/springboot-grocery-rest-api-0.0.1-SNAPSHOT.jar
   ```
+server runs on "localhost:8080"
 
 # Front end setup
 1. instal the latest nodeJS
