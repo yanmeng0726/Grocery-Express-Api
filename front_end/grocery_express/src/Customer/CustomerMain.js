@@ -6,7 +6,7 @@ export const CustomerMain = (props) => {
   return (
     <div>
       <div>
-        <CustomerToolBar/>
+        <CustomerToolBar handleLogout={props.handleLogout}/>
          <Outlet/>
       </div>
     </div>

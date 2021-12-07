@@ -23,11 +23,14 @@ import HistoryIcon from '@mui/icons-material/History';
 import { StoreItem } from '../../Manager/Component/StoreItem';
 import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../StoreContext';
+import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import GroupIcon from '@mui/icons-material/Group';
 
 
 
 
-export  function CustomerToolBar(props) {
+export  function ManagerToolBar(props) {
   let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -52,12 +55,12 @@ export  function CustomerToolBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleOpenMakeOrderPage =() =>{
-    navigate('MakeOrder')
+  const handleOpenShopManagementPage =() =>{
+    navigate('StoreManagement')
   }
 
-  const handleOpenOrderStatusPage =() =>{
-    navigate('Status')
+  const handleOpenAssignOrdersPage =() =>{
+    navigate('Orders')
   }
 
   const handleOpenAccountPage =() =>{
@@ -83,20 +86,20 @@ export  function CustomerToolBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleOpenMakeOrderPage}>
+      <MenuItem onClick={handleOpenShopManagementPage}>
         <IconButton size="large" color="inherit"> 
-            <ShoppingBagIcon/>
+          <StoreMallDirectoryIcon/>
         </IconButton>
-        <p>Shop</p>
+        <p>Shop Management</p>
       </MenuItem>
-      <MenuItem onClick={handleOpenOrderStatusPage}>
+      <MenuItem onClick={handleOpenAssignOrdersPage}>
         <IconButton
           size="large"
           color="inherit"
         >    
-            <HistoryIcon/>
+         <InventoryIcon/>
         </IconButton>
-        <p>Orders</p>
+        <p>Orders Management</p>
       </MenuItem>
       <MenuItem onClick={handleOpenAccountPage}>
         <IconButton
@@ -106,9 +109,9 @@ export  function CustomerToolBar(props) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+         <GroupIcon/>
         </IconButton>
-        <p>Account</p>
+        <p>Customer Management</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -145,18 +148,18 @@ export  function CustomerToolBar(props) {
               aria-label="show 17 new notifications"
               color="inherit"
               title="Shop"
-              onClick = {handleOpenMakeOrderPage}
+              onClick = {handleOpenShopManagementPage}
             >
-                <ShoppingBagIcon/>
+               <StoreMallDirectoryIcon/>
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
               title= "Orders"
-              onClick ={handleOpenOrderStatusPage}
+              onClick ={handleOpenAssignOrdersPage}
             >
-                <HistoryIcon/>
+                <InventoryIcon/>
             </IconButton>
             <IconButton
               size="large"
@@ -167,7 +170,7 @@ export  function CustomerToolBar(props) {
               color="inherit"
               title="Account"
             >
-              <AccountCircle />
+              <GroupIcon/>
             </IconButton>
             <IconButton
               size="large"
@@ -175,9 +178,9 @@ export  function CustomerToolBar(props) {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
+              onClick ={props.handleLogout}
               color="inherit"
               title="logout"
-              onClick ={props.handleLogout}
             >
               <LogoutIcon/>
             </IconButton>

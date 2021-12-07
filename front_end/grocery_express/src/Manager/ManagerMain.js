@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { StoreManagePage } from './Pages/StoreManagePage';
+import { Outlet } from 'react-router';
+import { ManagerToolBar } from './Component/ManagerToolBar';
 
 
 export const ManagerMain = (props) => {
   return (
     <div>
       <div>
-        <StoreManagePage/>
+        <ManagerToolBar handleLogout={props.handleLogout}/>
+        <Outlet/>
       </div>
     </div>
   );

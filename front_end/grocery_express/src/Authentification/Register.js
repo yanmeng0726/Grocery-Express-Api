@@ -15,7 +15,7 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {getStores, addStore} from '../req/Utils'
-import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
+import {StoreManagePage} from '../Manager/Pages/StoreItemManagePage'
 import { register } from '../req/Utils';
 
 export const Register =(props) =>{
