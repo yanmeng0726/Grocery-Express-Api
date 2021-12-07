@@ -29,7 +29,7 @@
             alert("Please assign the order when there are available pilot or drone!")
             return;
           }
-           props.handleAssign(props.storeId,props.storeId , pilot,drone)
+           props.handleAssign(props.storeId,props.id , pilot,drone)
         }
 
           const status ={
@@ -43,17 +43,10 @@
             <Box boxShadow={3} style={{width:"100%", padding:"30px", }}>
             <div style={{display: "flex", position: "relative", width: "100%", height:"50px", alignItems:"center" }}>
                <div style={{display : "flex", width:"10%", marginLeft : '10%'}}>{<p><b>{`OrderId: `}</b>{props.id}</p>}</div>
-               <div style={{display : "flex", width:"15%", marginLeft : '5%'}}>{<p><b>{`Status: `}</b>{status[props.status]}</p>}</div>        
+               <div style={{display : "flex", width:"20%", marginLeft : '20%'}}>{<p><b>{`Status: `}</b>{status[props.status]}</p>}</div>        
                {props.status===1&&props.pilots.length>0 &&props.drones.length>0&&<div style={{marginLeft:"20px", marginLeft : '5%'}}><PilotDropdown pilot={pilot} pilots={props.pilots} setPilot={setPilot}/></div>}
                {props.status===1&&props.pilots.length>0&&props.drones.length>0&&<div style={{marginLeft:"20px", marginLeft : '5%'}}><DroneDropdown drone={drone} drones={props.drones} setDrone={setDrone}/></div>}
                 {props.status===1&&<div><Button onClick={handleConfirm}  style={{width:"150px", height:"60px"}}>Assign Order</Button></div>}
-               { <IconButton >{
-                 expanded?<FontAwesomeIcon icon={faChevronCircleDown}/>
-                :
-                <FontAwesomeIcon icon={faChevronCircleRight}/>
-                }
-               </IconButton>
-                 }
                
             </div> 
             {

@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { StoreContext } from '../../StoreContext';
 import { getMaxLoadDrone, startaNewOrder } from '../../req/Utils';
+import { encryptInfo, decryptInfo } from '../../App';
 
 
 const TAX_RATE = 0.07;
@@ -45,6 +46,18 @@ function subWeights  (items) {
 
 
 export function OrderCheckoutPage(props) {
+  const currency = localStorage.getItem('currency')
+
+  const convertPrice= ( price)=>{
+    if(currency==='€'){
+       return price*0.89
+    }
+    if(currency === '¥'){
+        return price*6.37
+    }
+    return 1
+  }
+  
   const [rows, setRows]= React.useState([])
   const [totalPrice, setTotalPrice] =React.useState(0.0)
   const [totalWeight, setTotalWeight] = React.useState(0.0)
@@ -98,17 +111,36 @@ export function OrderCheckoutPage(props) {
         return;
     }
     var storeId = context.store.pendingOrders.storeId;
+    var pendingItems = context.store.pendingOrders.items;
+    console.log('start order', pendingItems)
+    var itemsArr = [];
+    Object.keys(pendingItems).map((key)=>{
+      let item = context.store.pendingOrders.items[key]
+      itemsArr.push({
+        //order_id :orderId,
+        quantity: item.quantity,
+        item_id:item.id
+       }
+      )
+   })
+   console.log(itemsArr)
     var userId = context.store.user.user_id;
     var session =context.store.session
     console.log(context.store)
     startaNewOrder(storeId, totalPrice, totalWeight, userId, session).then((res)=>{
-      console.log('start order', res, context.store.pendingOrders)
-      //we have to save our temprary data in local storage
-      var orderId = res.id;
-      var storeId = res.store_id;
-
-      
-      props.checkoutCallback(res)}
+      if(res){
+        var orderTempObj= {
+          storeId:storeId,
+          oderId:res.id,
+          items:itemsArr
+        }
+        
+        var orderString = encryptInfo(orderTempObj, session);
+        console.log(orderString)
+        localStorage.setItem("order", orderString);
+        props.checkoutCallback(res)
+      }
+    }
     ).catch( 
      (e)=>{alert("There is an unexpected error when start a order, please try later.Thanks!")})
   }
@@ -121,7 +153,7 @@ export function OrderCheckoutPage(props) {
           <TableRow>
             <TableCell><b>Name</b></TableCell>
             <TableCell align="right"><b>Qty.</b></TableCell>
-            <TableCell align="right"><b>Unit</b></TableCell>
+            <TableCell align="right"><b>{`Unit ${currency}`}</b></TableCell>
             <TableCell align="right"><b>Sum</b></TableCell>
           </TableRow>
         </TableHead>
@@ -130,13 +162,13 @@ export function OrderCheckoutPage(props) {
             <TableRow key={row.desc}>
               <TableCell>{row.desc}</TableCell>
               <TableCell align="right">{row.qty}</TableCell>
-              <TableCell align="right">{row.unit}</TableCell>
-              <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+              <TableCell align="right">{convertPrice(row.unit)}</TableCell>
+              <TableCell align="right">{convertPrice(ccyFormat(row.price))}</TableCell>
             </TableRow>
           ))}
           <TableRow>
             <TableCell colSpan={2}><b>Total</b></TableCell>
-            <TableCell align="right"><b>{ccyFormat(totalPrice)}</b></TableCell>
+            <TableCell align="right"><b>{convertPrice(ccyFormat(totalPrice))}</b></TableCell>
           </TableRow>
         </TableBody>
       </Table>

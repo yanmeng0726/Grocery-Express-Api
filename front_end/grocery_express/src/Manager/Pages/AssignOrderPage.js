@@ -80,7 +80,20 @@ export const AssignOrderPage = (porps) =>{
 
     const handleAssignOrder=(storeId,orderId,pilotId,droneId)=>{
         console.log(storeId,orderId,pilotId,droneId)
-       assignOrder(storeId,orderId,pilotId,droneId,session).then((res)=>{console.log(res)})
+       assignOrder(storeId,orderId,pilotId,droneId,session).then(
+         (res)=>{
+           alert('You successfuly assign pilot and drone to order')
+           var changeOrder = orders[orderId];
+           changeOrder.order_status = 3;
+           orders[orderId]=changeOrder;
+           var temp ={}
+           Object.keys(orders).map((key)=>{
+             temp[key]=orders[key];
+           })
+           console.log(orders)
+           setOrders(temp);
+         }
+         )
        .catch((err)=>{alert(err)})
     }
 

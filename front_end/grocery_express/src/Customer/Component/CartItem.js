@@ -11,6 +11,17 @@ import { StoreContext } from "../../StoreContext";
 export const CartItem = (props) =>
 {   
     const context = React.useContext(StoreContext);
+    const currency = localStorage.getItem('currency');
+
+    const convertPrice= ( price)=>{
+        if(currency==='€'){
+           return price*0.89
+        }
+        if(currency === '¥'){
+            return price*6.37
+        }
+        return 1
+    }
     const [quantity, setQuantity] = React.useState(0);
     React.useEffect(()=>{
         // check current quantuty in pending orders
@@ -62,7 +73,7 @@ export const CartItem = (props) =>
                 <Grid><Avatar src={item1}></Avatar></Grid>          
                 <Grid style={{marginLeft:"10px"}}>
                    <Grid style={{width:"20px"}}>{props.name}</Grid>
-                    <Grid style={{width:"20px"}}>${props.price}</Grid>
+                    <Grid style={{width:"20px"}}>{currency}{convertPrice(props.price)}</Grid>
                </Grid>
               </Grid>
                 <Grid  justifyContent="space-between" alignItems="center" style={{display :"flex", width:"15%"}}>
