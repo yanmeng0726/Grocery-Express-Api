@@ -45,10 +45,10 @@ export const Login =(props) =>{
         console.log(res) 
           props.handleLogin(true, res)
           if(res.is_manager){
-            navigate("/Manager")
+            navigate("/Manager/StoreManagement")
           }
           else{
-            navigate("/Costomer/MakeOrder")
+            navigate("/Costomer/Orders")
           }
 
       }
