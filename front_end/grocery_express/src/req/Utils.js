@@ -6,6 +6,10 @@ export function getStores(token) {
     return getRequest(`${location}/stores`, {}, token);
 }
 
+export function getCustomers(token) {
+    return getRequest( `${location}/users`, {}, token);
+}
+
 export function getItemsofStore(storeId,token){
     return getRequest(`${location}/stores/${storeId}/items`,{},token);
 }

@@ -11,7 +11,7 @@ import {OrderStatusPage} from './Customer/Pages/OrdersStatusPage'
 import { CustomerInfoPage } from './Customer/Pages/CustomerInfoPage';
 import { StoreManagementPage } from './Manager/Pages/StoreManagementPage';
 import { AssignOrderPage } from './Manager/Pages/AssignOrderPage';
-import { ItemManagementPage} from './Manager/Pages/StoreItemManagePage';
+import { CustomerManagementPage } from './Manager/Pages/CustomerManagementPage';
 import { ChuyingWorkSpace } from './ChuyingWS/ChuyingWorkSpace'
 import { HuangqiWorkSpace } from './HuangqiWS/HuangqiWorkSpace'
 import {Login} from '../src/Authentification/Login'
@@ -116,6 +116,7 @@ function App() {
         <Route path="Manager" element={<RequireAuth><ManagerMain handleLogout={handleLogout}/></RequireAuth>}>
           <Route path= "StoreManagement" element={<RequireAuth><StoreManagementPage/></RequireAuth>}/>
           <Route path= "Orders" element={<RequireAuth><AssignOrderPage/></RequireAuth>}/>
+          <Route path= "Customers" element={<RequireAuth><CustomerManagementPage/></RequireAuth>}/>
         </Route>  
         :
        <Route path="Customer" element={<RequireAuth><CustomerMain handleLogout={handleLogout}/></RequireAuth>}>
