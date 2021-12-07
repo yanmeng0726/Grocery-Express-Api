@@ -31,7 +31,6 @@ export const CustomerItem = (props) =>
                </Grid>
               </Grid>
                 <Grid  alignItems="center" style={{display :"flex", width:"80%"}}>
-                <Grid style={{display :"flex", width:"15%"}}>{`Email:  ${props.email}`}</Grid>
                 <Grid style={{display :"flex", width:"15%",marginLeft:"10px"}}>{`   Phone:  ${props.phone}`}</Grid>
                 <Grid style={{display :"flex", width:"15%",marginLeft:"10px"}} >{`   Address:  ${props.address}`}</Grid>
                 <Grid style={{display :"flex", width:"15%",marginLeft:"10px"}} >{`   Rating:  ${props.customer_rating}`}</Grid>

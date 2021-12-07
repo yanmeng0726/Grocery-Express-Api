@@ -88,7 +88,7 @@ export function register (name, email,phone,firstName, lastName, psw, addr, rati
     address: addr,
     customer_rating: rating,
     credits: credits,
-    is_manager: true
+    is_manager: false
     },"")
 }
 

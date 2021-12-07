@@ -34,7 +34,7 @@ import BuildCircleIcon from '@mui/icons-material/BuildCircle';
                 <Grid   alignItems="center" style={{display :"flex", width:"70%"}}>
                 <Grid style={{display :"flex"}}>{`Phone:  ${props.phone}`}</Grid>
                 <Grid style={{display :"flex", marginLeft:"10px"}}>{`SSN:  ${props.ssn}`}</Grid>
-                <Grid style={{display :"flex", marginLeft:"10px"}} >{`Licence:  ${props.licence_id}`}</Grid>
+                <Grid style={{display :"flex", marginLeft:"10px"}} >{`Licence:  ${props.license_id}`}</Grid>
                 <Grid style={{display :"flex", marginLeft:"10px"}} >{`Licence Expiration:  ${props.expiration_date}`}</Grid>
                 <Grid style={{display :"flex", marginLeft:"10px"}} >{`Experience:  ${props.experience}`}</Grid>
                 <Grid style={{display :"flex", marginLeft:"10px"}} >{`Status:  ${props.is_free? "free": "In a task"}`}</Grid> 

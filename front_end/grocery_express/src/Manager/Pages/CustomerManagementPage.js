@@ -61,9 +61,11 @@ export  function CustomerManagementPage(props) {
         <Paper elevation={3} > 
          {customers&&
            customers.map((customer,index)=>{
+             if(!customer.is_manager){
              return(
              <CustomerItem index={index} {...customer}/>
              )
+             }
            })
          }
         </Paper>  

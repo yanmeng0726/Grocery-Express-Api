@@ -48,7 +48,7 @@ export const Login =(props) =>{
             navigate("/Manager/StoreManagement")
           }
           else{
-            navigate("/Costomer/Orders")
+            navigate("/Customer/Orders")
           }
 
       }
