@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { StoreContext } from '../../StoreContext';
 import { getMaxLoadDrone, startaNewOrder } from '../../req/Utils';
+import { encryptInfo, decryptInfo } from '../../App';
 
 
 const TAX_RATE = 0.07;
@@ -98,17 +99,36 @@ export function OrderCheckoutPage(props) {
         return;
     }
     var storeId = context.store.pendingOrders.storeId;
+    var pendingItems = context.store.pendingOrders.items;
+    console.log('start order', pendingItems)
+    var itemsArr = [];
+    Object.keys(pendingItems).map((key)=>{
+      let item = context.store.pendingOrders.items[key]
+      itemsArr.push({
+        //order_id :orderId,
+        quantity: item.quantity,
+        item_id:item.id
+       }
+      )
+   })
+   console.log(itemsArr)
     var userId = context.store.user.user_id;
     var session =context.store.session
     console.log(context.store)
     startaNewOrder(storeId, totalPrice, totalWeight, userId, session).then((res)=>{
-      console.log('start order', res, context.store.pendingOrders)
-      //we have to save our temprary data in local storage
-      var orderId = res.id;
-      var storeId = res.store_id;
-
-      
-      props.checkoutCallback(res)}
+      if(res){
+        var orderTempObj= {
+          storeId:storeId,
+          oderId:res.id,
+          items:itemsArr
+        }
+        
+        var orderString = encryptInfo(orderTempObj, session);
+        console.log(orderString)
+        localStorage.setItem("order", orderString);
+        props.checkoutCallback(res)
+      }
+    }
     ).catch( 
      (e)=>{alert("There is an unexpected error when start a order, please try later.Thanks!")})
   }

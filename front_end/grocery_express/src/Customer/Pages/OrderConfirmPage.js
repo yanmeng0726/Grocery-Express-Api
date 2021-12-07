@@ -5,9 +5,49 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Divider } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import {decryptInfo} from '../../App'
+import { addLinesToOrder, cancelOrder  } from '../../req/Utils';
 
 export  function OrderConfirmPage(props) {
-    
+  const token = localStorage.getItem('token')
+    const orderString = localStorage.getItem('order')
+    var orderObj =decryptInfo(orderString, token);
+    const handlePlaceOrder = () =>{
+      //get stored order info
+      const token = localStorage.getItem('token')
+      const orderString = localStorage.getItem('order')
+      var orderObj =decryptInfo(orderString, token);
+      var newItems = [];
+      orderObj.items.map((item) => {
+        item.id = orderObj.oderId
+        newItems.push(item)
+      })
+      console.log(newItems)
+      addLinesToOrder(orderObj.storeId, orderObj.oderId, newItems,token ).then(
+        (res)=>{
+          console.log(res)
+          alert('Successifuly added items to your order')
+          props.addedItemCallback();
+
+        }
+      ).catch(
+        (err)=>{
+          alert(err)
+          props.resetOrder()
+        }
+      )
+    }
+    const handleCancel = () =>{
+      cancelOrder(orderObj.storeId, orderObj.oderId, token).then(
+          (res)=>{
+          alert('you successfully cancel this order!')
+          props.resetOrder()
+          }
+      ).catch(
+       (err)=>{alert(`Fail to cancel: ${err}`)}
+      )
+  }
+
     return (
       <Box
         sx={{
@@ -41,8 +81,8 @@ export  function OrderConfirmPage(props) {
               <Grid style={{marginLeft:"15px"}}>pending</Grid>
           </Grid>
           <Divider/>
-          <Button style={{marginTop:"15px"}} variant= "contained">Place Order</Button> 
-          <Button style={{marginTop:"15px", marginLeft: "15px"}} variant= "contained">Cancel Order</Button> 
+          <Button onClick={handlePlaceOrder} style={{marginTop:"15px"}} variant= "contained">Place Order</Button> 
+          <Button onClick={handleCancel}style={{marginTop:"15px", marginLeft: "15px"}} variant= "contained">Cancel Order</Button> 
         </Paper>  
       </Box>
     );

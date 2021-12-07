@@ -17,7 +17,15 @@ import {RequireAuth} from './Authentification/RequireAuth'
 
 
 
+export const encryptInfo = (userData, session)=>{
+  return Crypto.AES.encrypt(JSON.stringify(userData), session).toString();
+}
 
+export const decryptInfo = (encodedString, session)=>{
+  var bytes = Crypto.AES.decrypt(encodedString, session)
+  var decryptedData =JSON.parse(bytes.toString(Crypto.enc.Utf8));
+  return decryptedData;
+}
 function App() {
   const [value, setValue] = React.useState(window.location.pathname);
   const [loggedin, setloggedin] = React.useState(false);
@@ -73,15 +81,7 @@ function App() {
     setloggedin(loggedin)
   }
 
-  const encryptInfo = (userData, session)=>{
-    return Crypto.AES.encrypt(JSON.stringify(userData), session).toString();
-  }
-
-  const decryptInfo = (encodedString, session)=>{
-    var bytes = Crypto.AES.decrypt(encodedString, session)
-    var decryptedData =JSON.parse(bytes.toString(Crypto.enc.Utf8));
-    return decryptedData;
-  }
+  
 
   const handleLogout =() =>{
     localStorage.removeItem('user');

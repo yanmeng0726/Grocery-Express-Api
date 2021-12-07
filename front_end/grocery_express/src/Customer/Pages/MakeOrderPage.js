@@ -13,12 +13,15 @@ import { StoreItemsPage } from './StoreItemsPage';
 import { NewOrderPopup} from '../Component/NewOrderPopup'
 import { OrderCheckoutPage } from './OrderCheckoutPage';
 import {OrderConfirmPage} from './OrderConfirmPage'
+import { useNavigate } from 'react-router';
+
 
 
 
 const steps = ['Select a store', 'Add Items', 'Confirm' , 'Order Review'];
 
 export  function CustomerOrderPage () {
+    const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
     const [selectedStoreId, setSelectedStoreId] = useState(-1)
@@ -106,8 +109,18 @@ export  function CustomerOrderPage () {
       var newStores={
         ...store.store,
       }
-      store.setStore(newStores)
+      
       setActiveStep(0);
+    }
+
+    const addedItemCallback=()=>{
+      delete store.store['pendingOrders']  
+      var newStores={
+        ...store.store,
+      }
+      store.setStore(newStores)
+      localStorage.removeItem('order');
+      navigate('/Customer/Status')
     }
   
     return (
@@ -150,7 +163,7 @@ export  function CustomerOrderPage () {
                 <StoreItemsPage storeId ={selectedStoreId}/>
                }
                {activeStep ===2 && <OrderCheckoutPage checkoutCallback={checkoutCallback} resetOrder={resetOrder}/>}
-               {activeStep ===3 && createdOrder && createdOrder.id && <OrderConfirmPage order={createdOrder}/>}
+               {activeStep ===3 && createdOrder && createdOrder.id && <OrderConfirmPage order={createdOrder} resetOrder={resetOrder} addedItemCallback={addedItemCallback}/>}
             </div>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               {activeStep<3 &&<Button

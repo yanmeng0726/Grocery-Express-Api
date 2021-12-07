@@ -1,6 +1,6 @@
 import {deleteRequest, getRequest, postRequest, putRequest} from './req'
 
-const debug = false;
+const debug = true;
 const location = debug? 'http://localhost:8080': 'http://ec2-3-129-80-130.us-east-2.compute.amazonaws.com:8080'
 export function getStores(token) {
     return getRequest(`${location}/stores`, {}, token);
@@ -104,6 +104,14 @@ export function startaNewOrder(storeId, totalPrice, totalWeight, userId, token){
         order_status: 1,
         user_id:userId
     },token)
+}
+
+export function addLinesToOrder(storeId, orderId, items, token ){
+    return postRequest(`${location}/stores/${storeId}/orders/${orderId}/lines`,
+       {
+           lines:items
+       }
+    ,token)
 }
 
 export function cancelOrder(storeId, orderId, token){

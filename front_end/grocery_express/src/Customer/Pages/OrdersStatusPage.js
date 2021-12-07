@@ -59,8 +59,13 @@ export  function OrderStatusPage(props) {
     const handleCancel = (storeId, orderId) =>{
         cancelOrder(storeId, orderId, session).then(
             (res)=>{console.log(res)
-            delete(status.orderId)
-            setStatus(status)
+            var tempstatus = {}
+            delete status[orderId]
+            Object.keys(status).map((key)=>{
+              tempstatus[key]= status[key]
+            })
+            setStatus(tempstatus)
+            alert('you successfully cancel this order!')
             }
         ).catch(
          (err)=>{alert(`Fail to cancel: ${err}`)}
@@ -93,8 +98,9 @@ export  function OrderStatusPage(props) {
               <Grid style={{color:"grey"}}><h4>Total Cost</h4></Grid>
               {
                   Object.keys(status).map((key, index)=>{
+                    console.log('here')
                       var statusItem = status[key] 
-                      return(<StatusItem handleCancel={handleCancel} index={index} id={statusItem.id} status={statusItem.order_status} storeId={statusItem.store_id} totalCost={statusItem.total_cost} />)
+                      return(<StatusItem handleCancel={handleCancel} index={key} id={statusItem.id} status={statusItem.order_status} storeId={statusItem.store_id} totalCost={statusItem.total_cost} />)
                   })
               }
            </Grid>
