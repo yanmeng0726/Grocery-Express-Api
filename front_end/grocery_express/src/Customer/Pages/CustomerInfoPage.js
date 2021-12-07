@@ -17,7 +17,8 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 
 
 function CurrencyDropdown(props){
-    const [currency, setCurrency]=useState('$') 
+    const curCur = localStorage.getItem('currency')
+    const [currency, setCurrency]=useState(curCur? curCur: '$') 
     const handleChange = (event) => {
       setCurrency(event.target.value);
       localStorage.setItem('currency', event.target.value);
