@@ -1,9 +1,6 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, Outlet,Navigate} from "react-router-dom";
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import React, {  useEffect } from 'react';
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { ManagerMain } from './Manager/ManagerMain'
 import { CustomerMain} from './Customer/CustomerMain'
 import {CustomerOrderPage} from './Customer/Pages/MakeOrderPage'
@@ -12,20 +9,12 @@ import { CustomerInfoPage } from './Customer/Pages/CustomerInfoPage';
 import { StoreManagementPage } from './Manager/Pages/StoreManagementPage';
 import { AssignOrderPage } from './Manager/Pages/AssignOrderPage';
 import { CustomerManagementPage } from './Manager/Pages/CustomerManagementPage';
-import { ChuyingWorkSpace } from './ChuyingWS/ChuyingWorkSpace'
-import { HuangqiWorkSpace } from './HuangqiWS/HuangqiWorkSpace'
 import {Login} from '../src/Authentification/Login'
 import {Register} from "../src/Authentification/Register"
-import { FormControlUnstyled } from '@mui/core';
-import {StoreItemsPage} from './Customer/Pages/StoreItemsPage'
 import {StoreContextProvider, initData} from './StoreContext'
 import * as Crypto from 'crypto-js'
-import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
-import  Button from '@mui/material/Button';
-import {getStores} from './req/Utils'
 import {RequireAuth} from './Authentification/RequireAuth'
-import { useNavigate } from "react-router-dom";
-import { CustomerStorePage } from './Customer/Pages/CustomerStorePage';
+
 
 
 
@@ -117,18 +106,16 @@ function App() {
           <Route path= "StoreManagement" element={<RequireAuth><StoreManagementPage/></RequireAuth>}/>
           <Route path= "Orders" element={<RequireAuth><AssignOrderPage/></RequireAuth>}/>
           <Route path= "Customers" element={<RequireAuth><CustomerManagementPage/></RequireAuth>}/>
+          <Route path="*" element={<RequireAuth><StoreManagementPage/></RequireAuth>}/>
         </Route>  
         :
        <Route path="Customer" element={<RequireAuth><CustomerMain handleLogout={handleLogout}/></RequireAuth>}>
-         <Route path="*" element={<RequireAuth><CustomerOrderPage/></RequireAuth>}/>
          <Route path="MakeOrder" element={<RequireAuth><CustomerOrderPage/></RequireAuth>}/>
          <Route path= "Status" element={<RequireAuth><OrderStatusPage/></RequireAuth>}/>
          <Route path="Account" element={<RequireAuth><CustomerInfoPage/></RequireAuth>}/>
+         <Route path="*" element={<RequireAuth><CustomerOrderPage/></RequireAuth>}/>
       </Route>
       }
-      {<Route path="Chuying" element={<ChuyingWorkSpace/>}/>}
-      {<Route path="Chuying/:storeName" element={<StoreItemsPage/>} />}
-      {<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}
     </Routes>
     </BrowserRouter>
     </StoreContextProvider> 

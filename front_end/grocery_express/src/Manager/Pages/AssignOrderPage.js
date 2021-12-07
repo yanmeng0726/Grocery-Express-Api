@@ -1,21 +1,6 @@
 import React, { useState, useRef, useEffect, useContext }   from 'react';
 import Divider from '@mui/material/Divider';
-import {getStores, addStore, addItemToStore} from '../../req/Utils'
-import {NewStoreDialog} from '../Component/NewStorePopUp'
-import {NewItemDialog} from '../Component/NewItemPopUp'
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import {StoreItem} from "../Component/StoreItem"
+import {getStores} from '../../req/Utils'
 import { OrderItem } from '../Component/OrderItem';
 import { StoreContext } from '../../StoreContext';
 import { StoreDropdown } from '../Component/StoreDropDown';

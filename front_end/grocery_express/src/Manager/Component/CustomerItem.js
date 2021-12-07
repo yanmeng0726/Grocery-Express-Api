@@ -1,11 +1,6 @@
 import * as React from "react";
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import Avatar from '@mui/material/Avatar';
-import drone from '../../Assets/drone.jpg'
-import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import {Box} from '@mui/material'
 
 
@@ -31,7 +26,6 @@ export const CustomerItem = (props) =>
                </Grid>
               </Grid>
                 <Grid  alignItems="center" style={{display :"flex", width:"80%"}}>
-                <Grid style={{display :"flex", width:"15%"}}>{`Email:  ${props.email}`}</Grid>
                 <Grid style={{display :"flex", width:"15%",marginLeft:"10px"}}>{`   Phone:  ${props.phone}`}</Grid>
                 <Grid style={{display :"flex", width:"15%",marginLeft:"10px"}} >{`   Address:  ${props.address}`}</Grid>
                 <Grid style={{display :"flex", width:"15%",marginLeft:"10px"}} >{`   Rating:  ${props.customer_rating}`}</Grid>

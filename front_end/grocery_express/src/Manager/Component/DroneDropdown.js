@@ -3,7 +3,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { DryTwoTone } from '@mui/icons-material';
 
 export function DroneDropdown(props) {
     const handleChange = (event) => {

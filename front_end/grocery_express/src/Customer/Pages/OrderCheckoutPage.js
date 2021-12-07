@@ -9,8 +9,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { StoreContext } from '../../StoreContext';
 import { getMaxLoadDrone, startaNewOrder } from '../../req/Utils';
-import { popoverClasses } from '@mui/material';
-import { getThemeProps } from '@mui/system';
+
 
 const TAX_RATE = 0.07;
 
@@ -103,8 +102,11 @@ export function OrderCheckoutPage(props) {
     var session =context.store.session
     console.log(context.store)
     startaNewOrder(storeId, totalPrice, totalWeight, userId, session).then((res)=>{
-      console.log('start order', context.store.pendingOrders)
+      console.log('start order', res, context.store.pendingOrders)
       //we have to save our temprary data in local storage
+      var orderId = res.id;
+      var storeId = res.store_id;
+
       
       props.checkoutCallback(res)}
     ).catch( 

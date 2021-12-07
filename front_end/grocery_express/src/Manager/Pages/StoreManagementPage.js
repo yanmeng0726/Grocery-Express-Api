@@ -1,28 +1,17 @@
 import React,{useRef, useContext, useState, useEffect} from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
+
 import Box from '@mui/material/Box';
 import { StoreContext } from '../../StoreContext';
-import { getMaxLoadDrone, startaNewOrder } from '../../req/Utils';
-import { IconButton, popoverClasses } from '@mui/material';
-import { getThemeProps } from '@mui/system';
-import congrat from '../../Assets/status.jpg'
-import CheckIcon from '@mui/icons-material/Check';
-import Grid from '@mui/material/Grid';
-import { Divider } from '@mui/material';
-import Rating from '@mui/material/Rating';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+
+import { IconButton } from '@mui/material';
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import {useNavigate, Outlet} from 'react-router-dom'
-import {getStores, addStore, addItemToStore} from '../../req/Utils'
+import {useNavigate} from 'react-router-dom'
+import {getStores, addStore} from '../../req/Utils'
 import {NewStoreDialog} from '../Component/NewStorePopUp'
 import {ItemManagementPage} from './StoreItemManagePage'
 import { DroneManagementPage } from './StoreDroneManagementPage';
