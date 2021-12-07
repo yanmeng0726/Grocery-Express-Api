@@ -79,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://ec2-3-129-80-130.us-east-2.compute.amazonaws.com:3000", "http://groceryapp-env.eba-p2bdjsby.us-east-2.elasticbeanstalk.com:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://shuhengnas.synology.me:80", "http://groceryapp-env.eba-p2bdjsby.us-east-2.elasticbeanstalk.com:3000"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

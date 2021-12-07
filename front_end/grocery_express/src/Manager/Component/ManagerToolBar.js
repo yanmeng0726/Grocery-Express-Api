@@ -63,8 +63,8 @@ export  function ManagerToolBar(props) {
     navigate('Orders')
   }
 
-  const handleOpenAccountPage =() =>{
-    navigate('Account')
+  const handleOpenCustomerPage =() =>{
+    navigate('Customers')
   }
 
   const menuId = 'primary-search-account-menu';
@@ -101,7 +101,7 @@ export  function ManagerToolBar(props) {
         </IconButton>
         <p>Orders Management</p>
       </MenuItem>
-      <MenuItem onClick={handleOpenAccountPage}>
+      <MenuItem onClick={handleOpenCustomerPage}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -166,7 +166,7 @@ export  function ManagerToolBar(props) {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleOpenAccountPage}
+              onClick={handleOpenCustomerPage}
               color="inherit"
               title="Account"
             >
