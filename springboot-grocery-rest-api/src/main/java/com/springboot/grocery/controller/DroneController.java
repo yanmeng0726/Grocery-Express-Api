@@ -44,4 +44,14 @@ public class DroneController {
         return new ResponseEntity<>(updatedDrone, HttpStatus.OK);
     }
 
+
+    //this endpoint is for shipping company
+    @GetMapping("/{drone_id}/hasPendingOrder")
+    public ResponseEntity<Boolean> hasPendingOrder(@PathVariable(value = "store_id") Long store_id,
+                                                @PathVariable(value = "drone_id") Long drone_id){
+        Boolean hasPendingOrder = droneService.hasPendingOrder(drone_id);
+        return new ResponseEntity<>(hasPendingOrder, HttpStatus.OK);
+    }
+
+
 }
