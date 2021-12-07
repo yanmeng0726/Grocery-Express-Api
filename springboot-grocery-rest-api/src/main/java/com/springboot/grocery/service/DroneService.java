@@ -9,5 +9,6 @@ public interface DroneService {
     List<DroneDto> getDronesByStoreId(long store_id);
     DroneDto updateDrone(long store_id, long drone_id,DroneDto droneDto);
     double getMaxWeightLimitByStoreId(long id);
+    Boolean hasPendingOrder(long drone_id);
 
 }

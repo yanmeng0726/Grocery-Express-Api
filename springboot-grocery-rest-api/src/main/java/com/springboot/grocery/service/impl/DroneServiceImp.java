@@ -1,6 +1,7 @@
 package com.springboot.grocery.service.impl;
 
 import com.springboot.grocery.entity.Drone;
+import com.springboot.grocery.entity.Order;
 import com.springboot.grocery.entity.Store;
 import com.springboot.grocery.exception.GroceryAPIException;
 import com.springboot.grocery.exception.ResourceNotFoundException;
@@ -66,6 +67,16 @@ public class DroneServiceImp implements DroneService {
     public double getMaxWeightLimitByStoreId(long id) {
         double maxWeightLimit = droneRepository.getMaxWeightLimitByStoreId(id);
         return maxWeightLimit;
+    }
+
+    @Override
+    public Boolean hasPendingOrder(long drone_id) {
+        List<Order> orders= droneRepository.hasPendingOrder(drone_id);
+        if(orders.size()!=0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
