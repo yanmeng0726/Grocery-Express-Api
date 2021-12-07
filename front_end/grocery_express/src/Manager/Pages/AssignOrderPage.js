@@ -84,7 +84,7 @@ export const AssignOrderPage = (porps) =>{
          (res)=>{
            alert('You successfuly assign pilot and drone to order')
            var changeOrder = orders[orderId];
-           changeOrder.order_status = 3;
+           changeOrder.order_status = 2;
            orders[orderId]=changeOrder;
            var temp ={}
            Object.keys(orders).map((key)=>{
