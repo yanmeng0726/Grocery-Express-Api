@@ -1,8 +1,6 @@
 import * as React from "react";
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import Avatar from '@mui/material/Avatar';
 import drone from '../../Assets/drone.jpg'
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';

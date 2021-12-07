@@ -1,11 +1,5 @@
-import React, { useState, useRef, useEffect, useContext }   from 'react';
-import Divider from '@mui/material/Divider';
-import {getStores, addStore} from '../../req/Utils'
-import {CustomerToolBar} from "../Component/CustomerToolBar"
-import {StoreCard} from "../Component/StoreCard"
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
-import { stepConnectorClasses } from '@mui/material';
+import React, { useState,useContext }   from 'react';
+
 import { StoreContext } from '../../StoreContext';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -13,7 +7,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { UserPage } from '../../HuangqiWS/User_Page';
+
 import { CustomerStorePage } from './CustomerStorePage';
 import { StoreItemsPage } from './StoreItemsPage';
 import { NewOrderPopup} from '../Component/NewOrderPopup'

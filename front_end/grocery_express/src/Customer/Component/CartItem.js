@@ -6,7 +6,6 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Avatar from '@mui/material/Avatar';
 import item1 from '../../Assets/item1.jpg'
 import { StoreContext } from "../../StoreContext";
-import { AddedStoreItem } from "../../Manager/Component/AddedStoreItem";
 
 
 export const CartItem = (props) =>
