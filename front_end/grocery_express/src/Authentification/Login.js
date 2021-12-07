@@ -1,24 +1,13 @@
-import React, { useState, useRef, useEffect, useContext }   from 'react';
+import React, { useState}   from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Input from '@mui/material/Input';
-import FilledInput from '@mui/material/FilledInput';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import { Switch, Route, Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import {Paper} from '@mui/material'
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import {getStores, addStore} from '../req/Utils'
-import {StoreManagePage} from '../Manager/Pages/StoreItemManagePage'
 import {logIn} from '../req/Utils'
 import { useNavigate } from 'react-router-dom';
 

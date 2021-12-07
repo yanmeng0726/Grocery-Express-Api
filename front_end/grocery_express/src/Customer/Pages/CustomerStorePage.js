@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect, useContext }   from 'react';
-import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
+
 import {getStores, addStore} from '../../req/Utils'
-import {CustomerToolBar} from "../Component/CustomerToolBar"
+
 import {StoreCard} from "../Component/StoreCard"
-import Stack from '@mui/material/Stack';
+
 import Grid from '@mui/material/Grid';
-import { stepConnectorClasses } from '@mui/material';
+
 import { StoreContext } from '../../StoreContext';
 
 
