@@ -9,6 +9,66 @@ import Grid from '@mui/material/Grid';
 import { Divider } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { config } from '@fortawesome/fontawesome-svg-core';
+
+
+function CurrencyDropdown(props){
+    const [currency, setCurrency]=useState('$') 
+    const handleChange = (event) => {
+      setCurrency(event.target.value);
+      localStorage.setItem('currency', event.target.value);
+    };
+    return (
+      <div>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-standard-label">Currency</InputLabel>
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={currency}
+            onChange={handleChange}
+            label="Currency"
+          >
+        
+          <MenuItem  key={0} value={'$'}><div>{`USD`}</div></MenuItem> 
+          <MenuItem  key={1} value={'¥'}><div>{`RMB`}</div></MenuItem>
+          <MenuItem  key={2} value={'€'}><div>{`EUR`}</div></MenuItem>
+          </Select>
+        </FormControl>
+      </div>
+    );
+  }
+
+  function WeightDropdown(props){
+    const [weight, setWeight]=useState('kg') 
+    const handleChange = (event) => {
+      setWeight(event.target.value);
+      localStorage.setItem('weight', event.target.value);
+    };
+    return (
+      <div>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-standard-label">Weight Unit</InputLabel>
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={weight}
+            onChange={handleChange}
+            label="Weight Unit"
+          >
+        
+          <MenuItem  key={0} value={'kg'}><div>{`kg`}</div></MenuItem> 
+          <MenuItem  key={1} value={'lb'}><div>{`lb`}</div></MenuItem>
+          </Select>
+        </FormControl>
+      </div>
+    );
+  }
+  
 
 export  function CustomerInfoPage(props) {
     const isMounted =useRef(false);
@@ -34,7 +94,7 @@ export  function CustomerInfoPage(props) {
           '& > :not(style)': {
             m: 1,
             width: 500,
-            height: 500,
+            height: 800,
           },
         }}
       >
@@ -61,8 +121,17 @@ export  function CustomerInfoPage(props) {
               <Grid style={{marginLeft:"15px"}}>{user.credits}</Grid>
           </Grid>
           <Grid alignItems="center" justifyContent="center" spacing={4} style={{display: "flex", width : "100%"}}>
-              <Grid style={{color:"grey"}}><h4>Rating::</h4></Grid>
+              <Grid style={{color:"grey"}}><h4>Rating:</h4></Grid>
               <Grid style={{marginLeft:"15px"}}> <Rating name="read-only" value={5} readOnly /></Grid>
+          </Grid>
+          <Divider/>
+          <Grid alignItems="center" justifyContent="center" spacing={4} style={{display: "flex", width : "100%"}}>
+              <Grid style={{color:"grey"}}><h4>Change Currency:</h4></Grid>
+              <Grid style={{marginLeft:"15px"}}> <CurrencyDropdown/></Grid>
+          </Grid>
+          <Grid alignItems="center" justifyContent="center" spacing={4} style={{display: "flex", width : "100%"}}>
+              <Grid style={{color:"grey"}}><h4>Change Weight Unit:</h4></Grid>
+              <Grid style={{marginLeft:"15px"}}> <WeightDropdown/></Grid>
           </Grid>
         </Paper>  
       </Box>

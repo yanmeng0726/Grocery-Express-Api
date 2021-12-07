@@ -46,6 +46,18 @@ function subWeights  (items) {
 
 
 export function OrderCheckoutPage(props) {
+  const currency = localStorage.getItem('currency')
+
+  const convertPrice= ( price)=>{
+    if(currency==='€'){
+       return price*0.89
+    }
+    if(currency === '¥'){
+        return price*6.37
+    }
+    return 1
+  }
+  
   const [rows, setRows]= React.useState([])
   const [totalPrice, setTotalPrice] =React.useState(0.0)
   const [totalWeight, setTotalWeight] = React.useState(0.0)
@@ -141,7 +153,7 @@ export function OrderCheckoutPage(props) {
           <TableRow>
             <TableCell><b>Name</b></TableCell>
             <TableCell align="right"><b>Qty.</b></TableCell>
-            <TableCell align="right"><b>Unit</b></TableCell>
+            <TableCell align="right"><b>{`Unit ${currency}`}</b></TableCell>
             <TableCell align="right"><b>Sum</b></TableCell>
           </TableRow>
         </TableHead>
@@ -150,13 +162,13 @@ export function OrderCheckoutPage(props) {
             <TableRow key={row.desc}>
               <TableCell>{row.desc}</TableCell>
               <TableCell align="right">{row.qty}</TableCell>
-              <TableCell align="right">{row.unit}</TableCell>
-              <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+              <TableCell align="right">{convertPrice(row.unit)}</TableCell>
+              <TableCell align="right">{convertPrice(ccyFormat(row.price))}</TableCell>
             </TableRow>
           ))}
           <TableRow>
             <TableCell colSpan={2}><b>Total</b></TableCell>
-            <TableCell align="right"><b>{ccyFormat(totalPrice)}</b></TableCell>
+            <TableCell align="right"><b>{convertPrice(ccyFormat(totalPrice))}</b></TableCell>
           </TableRow>
         </TableBody>
       </Table>

@@ -9,6 +9,25 @@ import {decryptInfo} from '../../App'
 import { addLinesToOrder, cancelOrder  } from '../../req/Utils';
 
 export  function OrderConfirmPage(props) {
+  const currency = localStorage.getItem('currency')
+
+  const convertPrice= ( price)=>{
+    if(currency==='€'){
+       return price*0.89
+    }
+    if(currency === '¥'){
+        return price*6.37
+    }
+    return 1
+  }
+
+  const weight = localStorage.getItem('weight');
+  const convertWeight= ( weight)=>{
+    if(currency==='lb'){
+       return weight*2.20462
+    }
+    return 1
+  }
   const token = localStorage.getItem('token')
     const orderString = localStorage.getItem('order')
     var orderObj =decryptInfo(orderString, token);
@@ -69,12 +88,12 @@ export  function OrderConfirmPage(props) {
               <Grid style={{marginLeft:"15px"}}>{props.order.id}</Grid>
           </Grid>  
           <Grid alignItems="center" justifyContent="center" spacing={4} style={{display: "flex", width : "100%"}}>
-              <Grid><h4>total cost:</h4></Grid>
-              <Grid style={{marginLeft:"15px"}}>{props.order.total_cost}</Grid>
+              <Grid><h4>{`total cost (${currency})`}</h4></Grid>
+              <Grid style={{marginLeft:"15px"}}>{convertPrice(props.order.total_cost)}</Grid>
           </Grid>
           <Grid alignItems="center" justifyContent="center" spacing={4} style={{display: "flex", width : "100%"}}>
-              <Grid><h4>total weight:</h4></Grid>
-              <Grid style={{marginLeft:"15px"}}>{props.order.total_weight}</Grid>
+              <Grid><h4>{`total weight (${weight})`}</h4></Grid>
+              <Grid style={{marginLeft:"15px"}}>{convertWeight(props.order.total_weight)}</Grid>
           </Grid>
           <Grid alignItems="center" justifyContent="center" spacing={4} style={{display: "flex", width : "100%"}}>
               <Grid><h4>status:</h4></Grid>
