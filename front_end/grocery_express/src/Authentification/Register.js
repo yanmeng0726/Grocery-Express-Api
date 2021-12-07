@@ -52,7 +52,7 @@ const handleShowPsw = () => {
 
  /* name, email,phone,firstName, lastName, psw, addr, rating, credits, isManager, token*/
 const handleRegister = () =>{
-  register(name, email, phone, firstName, lastName, psw, address, 1000, 5,false).then(
+  register(name, email, phone, firstName, lastName, psw, address, 5, 1000,false).then(
     (res)=>{alert('you successfully created a new user!')}
   )
   .catch(

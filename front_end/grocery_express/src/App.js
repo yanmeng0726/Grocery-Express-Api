@@ -85,7 +85,9 @@ function App() {
 
   const handleLogout =() =>{
     localStorage.removeItem('user');
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
+    localStorage.removeItem('currency');
+    localStorage.removeItem('weight');
     setloggedin(false);
   }
   var isManager= false

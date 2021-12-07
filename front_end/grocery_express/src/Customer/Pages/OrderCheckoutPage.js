@@ -142,7 +142,7 @@ export function OrderCheckoutPage(props) {
       }
     }
     ).catch( 
-     (e)=>{alert("There is an unexpected error when start a order, please try later.Thanks!")})
+     (e)=>{alert(`There is an unexpected error when start a order, please try later.Thanks! err: ${e.message}`)})
   }
 
   return (
