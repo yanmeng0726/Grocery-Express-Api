@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {UserPage} from '../HuangqiWS/User_Page'
-import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
+import {StoreManagePage} from '../Manager/Pages/StoreItemManagePage'
 
 export const HuangqiWorkSpace = (props)=> {
   return (

@@ -18,7 +18,7 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {getStores, addStore} from '../req/Utils'
-import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
+import {StoreManagePage} from '../Manager/Pages/StoreItemManagePage'
 import {logIn} from '../req/Utils'
 import { useNavigate } from 'react-router-dom';
 
@@ -44,14 +44,19 @@ export const Login =(props) =>{
       (res)=>{
         console.log(res) 
           props.handleLogin(true, res)
-          navigate("/Customer")
-          
+          if(res.is_manager){
+            navigate("/Manager")
+          }
+          else{
+            navigate("/Costomer/MakeOrder")
+          }
+
       }
     ).
     catch(
       (err)=>{
         console.log(err)
-        alert("Please enter the correct user name or password")
+        alert(`Fail to login: &{err} `)
       }
     )
   }

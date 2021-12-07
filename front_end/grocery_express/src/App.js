@@ -9,6 +9,9 @@ import { CustomerMain} from './Customer/CustomerMain'
 import {CustomerOrderPage} from './Customer/Pages/MakeOrderPage'
 import {OrderStatusPage} from './Customer/Pages/OrdersStatusPage'
 import { CustomerInfoPage } from './Customer/Pages/CustomerInfoPage';
+import { StoreManagementPage } from './Manager/Pages/StoreManagementPage';
+import { AssignOrderPage } from './Manager/Pages/AssignOrderPage';
+import { ItemManagementPage} from './Manager/Pages/StoreItemManagePage';
 import { ChuyingWorkSpace } from './ChuyingWS/ChuyingWorkSpace'
 import { HuangqiWorkSpace } from './HuangqiWS/HuangqiWorkSpace'
 import {Login} from '../src/Authentification/Login'
@@ -34,7 +37,7 @@ function App() {
   })
   const [testData, setTestData] = React.useState([]);
   const contextStore= {store, setStore};
-  
+
   useEffect(() => {
     console.log(
       'here'
@@ -55,11 +58,7 @@ function App() {
     }
   }, []);
 
-  const handleChange = (event, newValue) => {
-    console.log(newValue)
-    setValue(newValue);
-  };
-
+   
   /*{"accessToken":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaHV5aW5nQGxsbC5jb20iLCJpYXQiOjE2Mzg2Njk4ODksImV4cCI6MTYzOTI3NDY4OX0.ESUWH3Qwf6wcUZgHoFli9fbUbC6mJXNODqRwy4mxrlGRnuDCy6wrAMwSO3mmdb3Ce5hUAJHrO6gwb-TBlCglZA",
   "tokenType":"Bearer","user_id":5,
   "name":"August","username":"August lu",
@@ -94,24 +93,41 @@ function App() {
     var decryptedData =JSON.parse(bytes.toString(Crypto.enc.Utf8));
     return decryptedData;
   }
- 
+
+  const handleLogout =() =>{
+    localStorage.removeItem('user');
+    localStorage.removeItem('token')
+    setloggedin(false);
+  }
+  var isManager= false
+  if(store.user.is_manager){
+    isManager= store.user.is_manager
+  }
+  console.log(store.user.is_manager)
   return (
     <div className="App">
     <StoreContextProvider value={contextStore}>  
     <BrowserRouter>
      <Routes>
-      {!loggedin&&<Route path = "/" element={<Login loggedin={loggedin} handleLogin={handleLogin}/>}></Route>}
+      {<Route path = "/" element={!loggedin? <Login loggedin={loggedin} handleLogin={handleLogin}/> : isManager?<StoreManagementPage/>: <CustomerOrderPage/>}/>}
       {<Route path = "Login" element={<Login loggedin={loggedin} handleLogin={handleLogin}/>}></Route>}
       {<Route path = "Register" element={<Register/>} />}
-      {<Route path="Manager" element={<RequireAuth><ManagerMain/></RequireAuth>}/>}
-      <Route path="Customer" element={<RequireAuth><CustomerMain/></RequireAuth>}>
+      {isManager?
+        <Route path="Manager" element={<RequireAuth><ManagerMain handleLogout={handleLogout}/></RequireAuth>}>
+          <Route path= "StoreManagement" element={<RequireAuth><StoreManagementPage/></RequireAuth>}/>
+          <Route path= "Orders" element={<RequireAuth><AssignOrderPage/></RequireAuth>}/>
+        </Route>  
+        :
+       <Route path="Customer" element={<RequireAuth><CustomerMain handleLogout={handleLogout}/></RequireAuth>}>
+         <Route path="*" element={<RequireAuth><CustomerOrderPage/></RequireAuth>}/>
          <Route path="MakeOrder" element={<RequireAuth><CustomerOrderPage/></RequireAuth>}/>
          <Route path= "Status" element={<RequireAuth><OrderStatusPage/></RequireAuth>}/>
          <Route path="Account" element={<RequireAuth><CustomerInfoPage/></RequireAuth>}/>
       </Route>
+      }
       {<Route path="Chuying" element={<ChuyingWorkSpace/>}/>}
       {<Route path="Chuying/:storeName" element={<StoreItemsPage/>} />}
-      {<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}  
+      {<Route path ="Huangqi" element={<HuangqiWorkSpace/>} />}
     </Routes>
     </BrowserRouter>
     </StoreContextProvider> 

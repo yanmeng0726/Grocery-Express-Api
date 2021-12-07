@@ -11,14 +11,49 @@ export function getItemsofStore(storeId,token){
 }
 
 export function addStore(storeName, token){
-    return postRequest(`${location}/stores`, { name: storeName})
+    return postRequest(`${location}/stores`, { name: storeName}, token)
 }
 
 export function addItemToStore(storeId, itemName, itemWeight, itemPrice, token){
     return postRequest(`${location}/stores/${storeId}/items`, 
     { name: itemName ,
       unit_price: itemPrice,
-      weight: itemWeight})
+      weight: itemWeight},token)
+}
+
+export function addDroneToStore(storeId, weightlimit, token){
+    return postRequest(`${location}/stores/${storeId}/drones`, 
+    {
+        weight_limit : weightlimit,
+	    trips_left : 20,
+	    status: 2},token)
+}
+
+/*{
+  "first_name": "lkaaaaaakl",
+  "last_name": "H",
+  "phone": "951-8a92-",
+  "ssn": "0032-da43",
+  "license_id": "se4asd",
+  "experience": 2,
+  "expiration_date": "01-01-1990",
+  "is_free": true
+}*/
+
+export function addPilotToStore( storeId, fn, ln, phone,ssn,license,experience, expiration, token){
+ return postRequest(`${location}/stores/${storeId}/employees`,
+  {
+    first_name: fn,
+    last_name: ln,
+    phone: phone,
+    ssn : ssn,
+    license_id: license,
+    experience: experience,
+    expiration_date: expiration,
+    is_free:true
+  },
+  token
+ )
 }
 
 export function logIn( userName, password) {

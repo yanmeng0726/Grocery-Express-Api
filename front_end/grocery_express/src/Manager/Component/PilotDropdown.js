@@ -25,11 +25,11 @@ console.log(props.pilot)
         >
         {
           
-          props.pilots.map((pilot, idx) => {
+         props.pilots.map((pilot, idx) => {
              
-                  return(
-                    <MenuItem key={idx} value={pilot.id}><div>{`${pilot.first_name} ${pilot.last_name}`}</div></MenuItem> 
-                  )
+        return(
+            <MenuItem key={idx} value={pilot.id}><div>{`${pilot.first_name} ${pilot.last_name}`}</div></MenuItem> 
+        )
         
           })
         }

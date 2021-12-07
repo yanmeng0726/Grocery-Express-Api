@@ -5,14 +5,14 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {getStores, addStore} from '../req/Utils'
-import {StoreManagePage} from '../Manager/Pages/StoreManagePage'
+import {StoreManagePage} from '../Manager/Pages/StoreItemManagePage'
 import {CustomerToolBar} from '../Customer/Component/CustomerToolBar'
 import {CustomerStorePage} from '../Customer/Pages/CustomerStorePage'
 import { CartItem } from '../Customer/Component/CartItem';
 import { StoreItemsPage } from '../Customer/Pages/StoreItemsPage';
 import { CustomerOrderPage } from '../Customer/Pages/MakeOrderPage'
 import {OrderItem} from '../Manager/Component/OrderItem'
-import { AssignOrderPage } from '../Manager/Pages/AssignOrderpPage';
+import { AssignOrderPage } from '../Manager/Pages/AssignOrderPage';
 
 export const ChuyingWorkSpace =(props) =>{
   

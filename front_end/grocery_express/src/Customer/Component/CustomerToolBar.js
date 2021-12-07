@@ -117,6 +117,7 @@ export  function CustomerToolBar(props) {
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
+          onClick ={props.handleLogout}
         >
           <LogoutIcon />
         </IconButton>
@@ -174,9 +175,9 @@ export  function CustomerToolBar(props) {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
               color="inherit"
               title="logout"
+              onClick ={props.handleLogout}
             >
               <LogoutIcon/>
             </IconButton>

@@ -55,12 +55,12 @@ export  function ManagerToolBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleOpenMakeOrderPage =() =>{
-    navigate('MakeOrder')
+  const handleOpenShopManagementPage =() =>{
+    navigate('StoreManagement')
   }
 
-  const handleOpenOrderStatusPage =() =>{
-    navigate('Status')
+  const handleOpenAssignOrdersPage =() =>{
+    navigate('Orders')
   }
 
   const handleOpenAccountPage =() =>{
@@ -86,13 +86,13 @@ export  function ManagerToolBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleOpenMakeOrderPage}>
+      <MenuItem onClick={handleOpenShopManagementPage}>
         <IconButton size="large" color="inherit"> 
           <StoreMallDirectoryIcon/>
         </IconButton>
         <p>Shop Management</p>
       </MenuItem>
-      <MenuItem onClick={handleOpenOrderStatusPage}>
+      <MenuItem onClick={handleOpenAssignOrdersPage}>
         <IconButton
           size="large"
           color="inherit"
@@ -120,6 +120,7 @@ export  function ManagerToolBar(props) {
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
+          onClick ={props.handleLogout}
         >
           <LogoutIcon />
         </IconButton>
@@ -147,7 +148,7 @@ export  function ManagerToolBar(props) {
               aria-label="show 17 new notifications"
               color="inherit"
               title="Shop"
-              onClick = {handleOpenMakeOrderPage}
+              onClick = {handleOpenShopManagementPage}
             >
                <StoreMallDirectoryIcon/>
             </IconButton>
@@ -156,7 +157,7 @@ export  function ManagerToolBar(props) {
               aria-label="show 17 new notifications"
               color="inherit"
               title= "Orders"
-              onClick ={handleOpenOrderStatusPage}
+              onClick ={handleOpenAssignOrdersPage}
             >
                 <InventoryIcon/>
             </IconButton>
@@ -177,7 +178,7 @@ export  function ManagerToolBar(props) {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick ={props.handleLogout}
               color="inherit"
               title="logout"
             >

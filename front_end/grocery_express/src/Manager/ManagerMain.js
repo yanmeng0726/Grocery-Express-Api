@@ -7,7 +7,7 @@ export const ManagerMain = (props) => {
   return (
     <div>
       <div>
-        <ManagerToolBar/>
+        <ManagerToolBar handleLogout={props.handleLogout}/>
         <Outlet/>
       </div>
     </div>
